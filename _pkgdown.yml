@@ -1,0 +1,66 @@
+url: https://rubenfcasal.github.io/legendplot/
+
+template:
+  bootstrap: 5
+  # light-switch: true
+  bootswatch: flatly # lumen
+
+news:
+  cran_dates: false
+
+figures:
+  fig.width: 7
+  fig.height: 5
+  other.parameters:
+    rgl:
+      fig.width: 6
+      fig.height: 4
+      fig.asp: 1
+
+
+reference:
+  - contents:
+      - legendplot-package
+  - title: "Standard plots with legends"
+    desc: "Functions for creating standard R plots with legends."
+    contents:
+      - splot
+      - fplot
+      - simage
+      - spersp
+      - spoints
+  - title: "'rgl' plots with legends"
+    desc: "Functions for creating 'rgl' 3d plots with legends."
+    contents:
+      - splot3d
+      - fplot3d
+      - fshade3d
+      - sshade3d
+  - title: "Color tools"
+    desc: "Color palettes and functions for assigning colors to values."
+    contents:
+      - scolor
+      - jet.colors
+      - hot.colors
+      - fcolor
+      - hcld.colors
+      - cat.colors
+  - title: "'rgl' tools"
+    desc: "Utilities for working with the 'rgl' package."
+    contents:
+      - new3d
+      - vb2tri
+      - add.viewpoint
+      - set.viewpoint
+      - ls.viewpoints
+      - rm.viewpoints
+      - get.viewpoints
+      - getview3d
+      - setview3d
+      - setmousemode
+      - pan3d
+      - axis3
+  - title: "Data"
+    desc: "Examples of data and 3d objects."
+    contents:
+      - volcanom

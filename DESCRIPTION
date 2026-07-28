@@ -1,0 +1,28 @@
+Package: legendplot
+Title: Standard and 'rgl' Plots with Legends
+Version: 0.1-1
+Date: 2026-07-28
+Authors@R: person("Ruben", "Fernandez-Casal", , 
+    "rubenfcasal@gmail.com", role = c("aut", "cre"), 
+    comment = c(ORCID = "0000-0002-5785-3739"))
+Maintainer: Ruben Fernandez-Casal <rubenfcasal@gmail.com>
+Depends:
+    R (>= 2.14.0),
+    graphics
+Imports:
+    rgl,
+    grDevices
+Suggests:
+    fields,
+    knitr
+Description: Provides tools to combine standard R plots or 'rgl' 3D plots 
+    with a legend. Facilitates the creation of composite figures that mix
+    2D or 3D visualizations with a categorical or continuous legend.
+License: GPL (>= 2)
+URL: https://rubenfcasal.github.io/legendplot/, https://github.com/rubenfcasal/legendplot/
+BugReports: https://github.com/rubenfcasal/legendplot/issues/
+LazyData: yes
+Encoding: UTF-8
+VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
