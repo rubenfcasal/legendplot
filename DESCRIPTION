@@ -1,7 +1,7 @@
 Package: legendplot
 Title: Standard and 'rgl' Plots with Legends
-Version: 0.1-1
-Date: 2026-07-28
+Version: 0.4-0
+Date: 2026-09-08
 Authors@R: person("Ruben", "Fernandez-Casal", , 
     "rubenfcasal@gmail.com", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-5785-3739"))
@@ -25,4 +25,4 @@ LazyData: yes
 Encoding: UTF-8
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+Config/roxygen2/version: 8.0.0

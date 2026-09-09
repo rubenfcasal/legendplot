@@ -1,0 +1,200 @@
+---
+title: "An introduction to legendplot"
+author: "Ruben Fernandez-Casal"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An introduction to legendplot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "##",
+  fig.dim = c(6, 5), 
+  fig.align = "center"
+)
+library(rgl)
+setupKnitr(autoprint = TRUE)
+```
+
+## Introduction
+
+`legendplot` provides tools to combine standard R plots, or [`rgl`](https://dmurdoch.github.io/rgl/) 3D plots, with a legend representing either a continuous color scale or a categorical (factor) legend. 
+
+The basic graphics device only provides the `legend()` function for adding legends, with the problem that it can obscure the main plot; furthermore, it is only suitable for categorical values and is not useful for adding a continuous color scale. 
+The `rgl` package only offers `legend3d()`, which incorporates the standard legend as a bitmap background for the current RGL subscene. 
+
+`legendplot` (currently) provides the following main functions:
+
+* **Standard plots**: 
+  - With a continuous legend: `splot()`, `spoints()`, `simage()`,
+    and `spersp()`.
+  - With a categorical legend:  `fplot()` and `fpoints()`.
+* **`rgl` plots**: 
+  - With a continuous legend: `splot3d()`, `spoints3d()`, `spersp3d()` 
+    and `sshade3d()`.
+  - With a categorical legend: `fplot3d()`, `fpoints3d()` and `fshade3d()`.
+* **Color tools**: 
+  - For continuous legends: `scolor()`, `jet.colors()`and `hot.colors()`
+  - For categorical legends: `fcolor()`, `hcld.colors()` and `cat.colors()`.
+* **`rgl` tools**: `new3d()`, viewpoint (e.g. `setviewpoint3d()`) and mouse 
+  actions (e.g. `setmouse3d()`) utilities.
+
+
+Other packages that may be of interest are:
+
+* [`plot3D`](https://cran.r-project.org/package=plot3D): Plotting Multi-Dimensional Data.
+* [`ggplot2`](https://ggplot2.tidyverse.org/): Create Elegant Data Visualisations Using the Grammar of Graphics.
+* [`plotly`](https://plotly-r.com/): Create Interactive Web Graphics via [plotly.js](https://plotly.com/javascript/).
+
+Nevertheless, I prefer standard or `rgl` graphics, mainly because they render faster when dealing with large amounts of data (also following the "keep it small and simple", [KISS](https://en.wikipedia.org/wiki/KISS_principle), principle).
+
+```{r setup}
+library(legendplot)
+```
+
+
+## Continuous scales in standard plots
+
+The base function for a continuous legend is `splot()`. 
+It splits the plotting region into a main panel and a legend strip showing a continuous color scale (based on `fields::image.plot()`).
+After calling this function, the main graph can be draw as usual. 
+For example:
+
+```{r splot}
+scale.range <- range(mtcars$mpg)
+res <- splot(slim = scale.range, legend.lab = "mpg")
+with(mtcars, 
+     plot(hp, qsec, col = scolor(mpg, slim = scale.range),
+          pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests")
+)
+par(res$old.par) # restore graphical parameters
+```
+
+`scolor()` maps a numeric vector to colors from a continuous palette, such as:
+
+- `jet.colors()`: rainbow-style palette (similar to MATLAB `jet`).
+- `hot.colors()`: useful for values ranging from zero to a maximum (e.g. densities).  
+
+`splot()` can be also used with `add = TRUE` to attach a legend to an existing plot. 
+For instance, several plots can share a common color scale:
+
+```{r splot-shared-legend, fig.dim=c(9, 5)}
+set.seed(1)
+nx <- c(40, 40)
+x1 <- seq(-1, 1, length.out = nx[1])
+x2 <- seq(-1, 1, length.out = nx[2])
+trend <- outer(x1, x2, function(x, y) x^2 - y^2)
+y <- trend + rnorm(prod(nx), 0, 0.1)
+
+scale.range <- c(-1.2, 1.2)
+scale.color <- jet.colors(256)
+
+old.par <- par(mfrow = c(1, 2), omd = c(0.05, 0.85, 0.05, 0.95))
+image(x1, x2, trend, zlim = scale.range, main = "Trend", col = scale.color)
+image(x1, x2, y, zlim = scale.range, main = "Data", col = scale.color)
+par(old.par)
+splot(slim = scale.range, col = scale.color, legend.shrink = 0.7, add = TRUE)
+```
+
+The package also supplies high-level functions that make this pattern automatic.
+The `sxxxx()` family of functions (`spoints()`, `simage()` and `spersp()`) draws the color-scale legend and the corresponding base plot (`plot()`, `image()` or `persp()`), with the appropriate colors, in a single call:
+
+```{r spoints}
+with(mtcars, 
+     spoints(hp, qsec, mpg, main = "Motor Trend Car Road Tests",
+             xlab = "Horsepower", ylab = "1/4 mile time", 
+             legend.lab = "Miles per gallon")
+)
+```
+
+These functions are "compatible" with the `mfcol` and `mfrow` graphics parameters:
+
+```{r simage-spersp, fig.dim=c(9, 5)}
+old.par <- par(mfrow = c(1, 2))
+spersp(x1, x2, trend, slim = scale.range, main = "Trend", zlab = "y", legend = FALSE)
+simage(x1, x2, y, slim = scale.range, main = "Data", legend.mar = 10, legend.width = 3)
+par(old.par)
+```
+
+All of them share the same legend-related arguments as `splot()`, and accept `legend = FALSE` to draw the main plot without a legend.
+By default, the plot parameters are reset to the values before entering the function. 
+If `reset = FALSE` they will not be reset to make it possible to add more features to the plot (e.g. using functions such as points or lines).
+
+
+## Categorical legends in standard plots
+
+`fplot()` is the categorical counterpart of `splot()`: instead of a color bar it draws a classic factor-level legend (with boxes, points or line segments), using `legend()` internally.
+
+```{r fplot}
+f <- as.factor(mtcars$cyl)
+res <- fplot(levels(f), col = cat.colors(nlevels(f)), type = "point",
+             legend.lab = "cyl")
+with(mtcars, plot(hp, qsec, col = fcolor(f, col = res$col),
+                   pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests"))
+par(res$old.par)
+```
+
+`fcolor()` maps a factor (or a vector coercible to one) to colors, using a categorical palette such as `hcld.colors()` (based on `hcl.colors()` "Dark 3") or `cat.colors()` (based on [ColorBrewer 2.0](https://colorbrewer2.org)).
+
+
+## `rgl` 3D plots with legends
+
+The same ideas extend to interactive 3D scenes built with the `rgl` package.
+`splot3d()` and `fplot3d()` split the active `rgl` device into a main subscene and a legend subscene.
+After calling one of these functions, the usual `rgl` plotting functions can be used as normal. 
+For example:
+
+```{r splot3d}
+library(rgl)
+# Use `open3d()` or `new3d()` to open a new device.
+scale.range <- range(mtcars$mpg)
+splot3d(slim = scale.range, legend.lab = "mpg")
+with(mtcars, 
+     plot3d(hp, qsec, wt, type = "s",
+            col = scolor(mpg, slim = scale.range))
+)
+```
+
+`new3d()` serves as a replacement for the `open3d()` and `clear3d()` functions^[Note that it is not necessary to use these functions in RMarkdown code chunks (see [`rgl::rglwidget()`](https://dmurdoch.github.io/rgl/reference/rglwidget.html) and [*Documents with 'rgl' Scenes*](https://dmurdoch.github.io/rgl/articles/rgl.html#documents-with-rgl-scenes)).].
+It opens a new device if none exists (or if argument `open = TRUE` is set) and, otherwise, clears the current one.
+In addition, it changes several of the default mouse actions in 'rgl', assigning the middle button to zoom (via `setmouse3d()`), the right button to pan (via `pan3d()`), and enabling a double-click with the left button to restore the scene's default viewpoint (via `dbltrack3d()`; keeping the mouse acting as a virtual trackball, rotating the scene, when this button is held down).
+Unfortunately, these mouse actions currently **do not work with RMarkdown** documents.
+
+High-level 3D plot functions are also available, named in the form `sxxx3d()` and `fxxx3d()`, which allow the corresponding 3D graph to be plotted along with a legend, either continuous or categorical, in a single call.
+For example, the plot shown above could be generated with the following command:
+
+```{r spoints3d, eval=FALSE}
+with(mtcars, spoints3d(hp, qsec, wt, s = mpg, type = "s"))
+```
+
+Similarly, `fpoints3d()` draws a 3D scatter plot with a categorical legend, `spersp3d()` draws a 3D surface plot with a continuous color scale, and `sshade3d()` or `fshade3d()` draw a colored triangular mesh together with a continuous or categorical legend, respectively.
+As a final example, the topography of Auckland's Maunga Whau volcano (bundled as the `volcanom` mesh) can be displayed with the following code:
+
+```{r sshade3d}
+sshade3d(volcanom, s = volcanom$vb[3, ], meshColor = "facesvertices")
+```
+
+
+## Other `rgl` utilities
+
+Beyond the plotting functions above, `legendplot` also provides a few
+usefull tools for working with `rgl` plots:
+
+* `vb2tri3d()`: computes one value per triangle from values given at the
+  vertices of a mesh (used by `sshade3d()` when `meshColor = "facesvertices"`).
+* `setviewpoint3d()`, `addviewpoint3d()`, `getviewpoints3d()`,
+  `lsviewpoints3d()`, `rmviewpoints3d()`, `getview3d()` and `setview3d()`:
+  manage (save, list, restore...) named `rgl` user viewpoints.
+* `setmouse3d()`, `pan3d()` and `dbltrack3d()`: configure `rgl` mouse actions 
+  (used internally by `new3d()`).
+* `axis3()`: draws a 3D axis with control over tick length, tick angle and 
+  label position (used internally by `fplot3d()`).
+
+
+## Further help
+
+See the function [reference pages](https://rubenfcasal.github.io/legendplot/reference/) for the full list of arguments and additional examples.

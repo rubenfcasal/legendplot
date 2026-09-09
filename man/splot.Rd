@@ -97,9 +97,12 @@ These functions are based on function \code{\link[fields]{image.plot}} of packag
 # Plot equivalent to spoints():
 scale.range <- range(mtcars$mpg)
 res <- splot(slim = scale.range, legend.lab = "mpg")
-with( mtcars, plot(hp, qsec, col = scolor(mpg, slim = scale.range),
-      pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests"))
+with(mtcars,
+   plot(hp, qsec, col = scolor(mpg, slim = scale.range),
+        pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests")
+)
 par(res$old.par) # restore graphical parameters
+
 # Multiple plots with a common legend:
 # regularly spaced 2D data...
 set.seed(1)

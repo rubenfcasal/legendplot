@@ -30,8 +30,8 @@ fplot(
 \arguments{
 \item{labels}{vector with the category labels.}
 
-\item{col}{colors associated with each level (same order as
-\code{labels}). Defaults to \code{hcld3.colors()}.}
+\item{col}{colors associated with each level (same order as \code{labels}).
+Defaults to \code{hcld.colors()}.}
 
 \item{type}{type of symbols shown in the legend: \code{"box"} for filled
 color boxes (as in a classic factor-level legend), \code{"point"} for points, or
@@ -44,7 +44,7 @@ when \code{type = "line"}.}
 
 \item{cex}{text/symbol size in the legend.}
 
-\item{border, pt.cex, seg.len}{additional \code{legend()} parameters,
+\item{border, pt.cex, seg.len}{additional \code{\link[=legend]{legend()}} parameters,
 also used to estimate the required legend width/height.
 The default values are: \code{border = col}, \code{pt.cex = cex * 1.5} and \code{seg.len = 1.5}.}
 
@@ -55,14 +55,14 @@ If \code{TRUE} the legend will be along the bottom.}
 full height or width of the plot.}
 
 \item{legend.width, legend.mar}{control the size and margin of the legend
-panel, as in \code{splot()}. If left as \code{NULL} (default), they are computed
-automatically following the same character-size logic that \code{legend()}
+panel, as in \code{\link[=splot]{splot()}}. If left as \code{NULL} (default), they are computed
+automatically following the same character-size logic that \code{\link[=legend]{legend()}}
 itself uses internally.}
 
 \item{legend.lab}{legend title.}
 
 \item{legend.x}{legend location relative to the legend panel (argument \code{x}
-of \code{legend()}). Possible values are: \code{"center"} (default), \code{"bottomright"},
+of \code{\link[=legend]{legend()}}). Possible values are: \code{"center"} (default), \code{"bottomright"},
 \code{"bottom"}, \code{"bottomleft"}, \code{"left"}, \code{"topleft"}, \code{"top"}, \code{"topright"} or \code{"right"}.}
 
 \item{bigplot, smallplot}{plot coordinates for main and legend panels.
@@ -71,7 +71,7 @@ If not passed these will be determined within the function.}
 \item{add}{logical; if \code{TRUE} the legend is just added
 to the existing plot (the graphical parameters are not changed).}
 
-\item{...}{additional arguments passed to \code{legend()}.}
+\item{...}{additional arguments passed to \code{\link[=legend]{legend()}}.}
 }
 \value{
 \code{fplot()} invisibly returns a list with components: \code{bigplot},
@@ -80,18 +80,21 @@ parameters to the values before entering the function).
 }
 \description{
 \code{fplot()} is designed to combine a standard R plot with a categorical (factor) legend.
-Analogous to \code{splot()}, splits the plotting region into a main panel and a
-legend panel, and uses \code{legend()} to draw the labels with their colors and symbols.
+Analogous to \code{\link[=splot]{splot()}}, splits the plotting region into a main panel and a
+legend panel, and uses \code{\link[=legend]{legend()}} to draw the labels with their colors and symbols.
 }
 \examples{
 # Plot equivalent to fpoints():
 f <- as.factor(mtcars$cyl)
-res <- fplot(levels(f), col = cat.colors(nlevels(f)), type = "point",
+res <- fplot(levels(f), col = cat.colors(f), type = "point",
              legend.lab = "cyl")
-with( mtcars, plot(hp, qsec, col = fcolor(f, col = res$col),
-                   pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests"))
+with(mtcars,
+    plot(hp, qsec, col = fcolor(f, col = res$col),
+         pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests")
+)
 par(res$old.par) # restore graphical parameters
+
 }
 \seealso{
-\verb{[legend()]}, \code{\link[=fcolor]{fcolor()}}\verb{, }\code{\link[=hcld.colors]{hcld.colors()}}\verb{, }\code{\link[=cat.colors]{cat.colors()}}`.
+\code{\link[=legend]{legend()}}, \code{\link[=fcolor]{fcolor()}}, \code{\link[=hcld.colors]{hcld.colors()}}, \code{\link[=cat.colors]{cat.colors()}}, \code{\link[=fpoints]{fpoints()}}.
 }

@@ -9,11 +9,11 @@ new3d(open = FALSE, clear = "all", ...)
 \arguments{
 \item{open}{if \code{TRUE} a new rgl device is opened.}
 
-\item{clear}{rgl stack(s) to remove, see argument \code{type} in \code{\link[rgl:scene]{rgl::clear3d()}}
+\item{clear}{rgl stack(s) to remove, see argument \code{type} in \code{\link[rgl:clear3d]{rgl::clear3d()}}
 (used only if there is an active device and \code{open = FALSE}).
 Defaults to \code{"all"}, with a new light source added to the scene.}
 
-\item{...}{additional arguments, passed to \code{\link[rgl:open3d]{rgl::open3d()}} or \code{\link[rgl:scene]{rgl::clear3d()}}.}
+\item{...}{additional arguments, passed to \code{\link[rgl:open3d]{rgl::open3d()}} or \code{\link[rgl:clear3d]{rgl::clear3d()}}.}
 }
 \value{
 Called for its side effect (opens or clears the rgl device, and configures
@@ -22,15 +22,23 @@ the mouse mode); invisibly returns the current device.
 \description{
 Clear the current rgl device or open a new one (if there are no devices or
 if \code{open = TRUE}).
-Additionally assign the middle button to zoom (via \code{\link[=setmousemode]{setmousemode()}}) and
-the right button to panning (via \code{\link[=pan3d]{pan3d()}}).
+}
+\details{
+In addition, \code{new3d()} changes several of the default mouse actions in \pkg{rgl},
+assigning the middle button to zoom (via \code{\link[=setmouse3d]{setmouse3d()}}), the right button
+to pan (via \code{\link[=pan3d]{pan3d()}}), and enabling a double-click with the left button to
+restore the scene's default viewpoint (via \code{\link[=dbltrack3d]{dbltrack3d()}}; keeping the mouse
+acting as a virtual trackball, rotating the scene, when this button is held down).
 }
 \examples{
 library(rgl)
 # New rgl device
 new3d()
 shade3d(volcanom, col = "lightgreen")
-# Use the right mouse button to panning and the middle button to zoom
+# Use the right mouse button to panning,
+# the middle button (or wheel) to zoom,
+# rotate as usual with left button; double-click resets the view
+# NOTE: these mouse actions currently **do not work with RMarkdown** documents.
 # ...
 # Clear the current device
 new3d()
@@ -38,5 +46,5 @@ sshade3d(volcanom, s = volcanom$vb[3, ], meshColor = "facesvertices",
          col = terrain.colors(128))
 }
 \seealso{
-\code{\link[rgl:open3d]{rgl::open3d()}}, \code{\link[rgl:scene]{rgl::clear3d()}}
+\code{\link[rgl:open3d]{rgl::open3d()}}, \code{\link[rgl:clear3d]{rgl::clear3d()}}, \code{\link[=setmouse3d]{setmouse3d()}}, \code{\link[=pan3d]{pan3d()}}, \code{\link[=dbltrack3d]{dbltrack3d()}}.
 }

@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Standard and rgl Plots with Legends • legendplot</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Standard and rgl Plots with Legends">
 <meta name="description" content="Provides tools to combine standard R plots or rgl 3D plots with a legend. Facilitates the creation of composite figures that mix 2D or 3D visualizations with a categorical or continuous legend.">
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">legendplot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1-1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4-0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,7 +31,9 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/legendplot.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -48,7 +50,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="legendplot-standard-and-rgl-plots-with-legends">legendplot: Standard and ‘rgl’ Plots with Legends<a class="anchor" aria-label="anchor" href="#legendplot-standard-and-rgl-plots-with-legends"></a>
 </h1></div>
-<p>This package provides tools to combine standard R plots or ‘rgl’ 3D plots with a legend, facilitating the creation of composite figures that mix 2D or 3D visualizations with a categorical or continuous legend.</p>
+<p>This package provides tools to combine standard R plots or <a href="https://dmurdoch.github.io/rgl/" class="external-link"><code>rgl</code></a> 3D plots with a legend, facilitating the creation of composite figures that mix 2D or 3D visualizations with a categorical or continuous legend.</p>
 <p>For more information visit <a href="https://rubenfcasal.github.io/legendplot/articles/legendplot.html" class="uri">https://rubenfcasal.github.io/legendplot/articles/legendplot.html</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -60,6 +62,7 @@
 <!--
 devtools::install(build_vignettes = TRUE)
 pkgdown::build_site()
+pkgdown::build_reference()
 pkgdown::build_reference(lazy = FALSE)
 pkgdown::build_articles()
 devtools::check(cran = TRUE, remote = TRUE, manual = TRUE)
@@ -95,7 +98,7 @@ pkgdown::build_site(getwd())
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Ruben Fernandez-Casal <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5785-3739" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ruben Fernandez-Casal <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5785-3739" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -110,7 +113,7 @@ pkgdown::build_site(getwd())
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

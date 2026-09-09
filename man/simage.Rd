@@ -16,7 +16,7 @@ simage(x, ...)
   breaks = NULL,
   legend = TRUE,
   horizontal = FALSE,
-  legend.shrink = 1,
+  legend.shrink = 0.8,
   legend.width = 1.2,
   legend.mar = ifelse(horizontal, 3.1, 5.1),
   legend.lab = NULL,
@@ -96,15 +96,15 @@ function. Usually this will not be needed (see \code{\link[fields]{image.plot}}
 for details).}
 
 \item{reset}{logical; if \code{FALSE} the plotting region
-(\code{\link{par}("plt")}) will not be reset to make it possible to add more features
+(\code{par("plt")}) will not be reset to make it possible to add more features
 to the plot (e.g. using functions such as points or lines). If \code{TRUE} (default)
 the plot parameters will be reset to the values before entering the function.}
 
-\item{xlab}{label for the x axis.}
+\item{xlab}{label for the x axis, defaults to a description of \code{x}.}
 
-\item{ylab}{label for the y axis.}
+\item{ylab}{label for the y axis, defaults to a description of \code{y}.}
 
-\item{asp}{the y/x aspect ratio, see \code{\link{plot.window}}.}
+\item{asp}{the y/x aspect ratio, see \code{\link[=plot.window]{plot.window()}}.}
 }
 \value{
 Invisibly returns a list with the following 3 components:

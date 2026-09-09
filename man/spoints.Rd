@@ -14,6 +14,7 @@ spoints(x, ...)
   slim = range(s, finite = TRUE),
   col = jet.colors(128),
   breaks = NULL,
+  type = "p",
   legend = TRUE,
   horizontal = FALSE,
   legend.shrink = 1,
@@ -39,12 +40,12 @@ spoints(x, ...)
 \item{x}{object used to select a method. In the default method, it provides the \code{x}
 coordinates for the plot (and optionally the \code{y} coordinates;
 any reasonable way of defining the coordinates is acceptable,
-see the function \code{\link{xy.coords}} for details).}
+see the function \code{\link[=xy.coords]{xy.coords()}} for details).}
 
 \item{...}{additional graphical parameters (to be passed to the main plot function
-or to \code{sxxxx.default}; e.g. \code{xlim, ylim,} ...). NOTE:
+or to \code{spoints.default()}; e.g. \verb{xlim, ylim,} ...). NOTE:
 graphical arguments passed here will only have impact on the main plot.
-To change the graphical defaults for the legend use the \code{\link{par}}
+To change the graphical defaults for the legend use the \code{\link[=par]{par()}}
 function beforehand (e.g. \code{par(cex.lab = 2)} to increase colorbar labels).}
 
 \item{y}{y coordinates. Alternatively, a single argument \code{x} can be provided.}
@@ -59,10 +60,13 @@ details).}
 \item{breaks}{(optional) numeric vector with the breakpoints for the color scale:
 must have one more breakpoint than \code{col} and be in increasing order.}
 
+\item{type}{character indicating the type of plotting; actually any of the
+types as in \code{\link[=plot.default]{plot.default()}}.}
+
 \item{legend}{logical; if \code{TRUE} (default), the plotting region is splitted into two parts,
 drawing the main plot in one and the legend with the color scale in the other.
 If \code{FALSE} only the (coloured) main plot is drawn and the arguments related
-to the legend are ignored (\code{\link{splot}} is not called).}
+to the legend are ignored (\code{\link[=splot]{splot()}} is not called).}
 
 \item{horizontal}{logical; if \code{FALSE} (default) legend will appear on the right side.
 If \code{TRUE} the legend will be along the bottom.}
@@ -76,8 +80,8 @@ full height or width of the plot.}
 \item{legend.mar}{width in characters of legend margin that has the axis.
 Default is 5.1 for a vertical legend and 3.1 for a horizontal legend.}
 
-\item{legend.lab}{label for the axis of the color legend. Default is no
-label as this is usual evident from the plot title.}
+\item{legend.lab}{label for the axis of the color legend, defaults to a
+description of \code{s}.}
 
 \item{bigplot}{plot coordinates for main plot. If not passed, and \code{legend}
 is TRUE, these will be determined within the function.}
@@ -98,24 +102,25 @@ function. Usually this will not be needed (see \code{\link[fields]{image.plot}}
 for details).}
 
 \item{add}{logical; if \code{TRUE} the scatter plot is just added
-to the existing plot.}
+to the existing plot (including the legend if \code{legend = TRUE}, although the
+graphical parameters are not modified).}
 
 \item{reset}{logical; if \code{FALSE} the plotting region
-(\code{\link{par}("plt")}) will not be reset to make it possible to add more features
+(\code{par("plt")}) will not be reset to make it possible to add more features
 to the plot (e.g. using functions such as points or lines). If \code{TRUE} (default)
 the plot parameters will be reset to the values before entering the function.}
 
-\item{pch}{vector of plotting characters or symbols: see \code{\link{points}}.}
+\item{pch}{vector of plotting characters or symbols: see \code{\link[=points]{points()}}.}
 
 \item{cex}{numerical vector giving the amount by which plotting characters
 and symbols should be scaled relative to the default. This works as a multiple
-of \code{\link{par}("cex")}.}
+of \code{par("cex")}.}
 
-\item{xlab}{label for the x axis.}
+\item{xlab}{label for the x axis, defaults to a description of \code{x}.}
 
-\item{ylab}{label for the y axis.}
+\item{ylab}{label for the y axis, defaults to a description of \code{y}.}
 
-\item{asp}{the y/x aspect ratio, see \code{\link{plot.window}}.}
+\item{asp}{the y/x aspect ratio, see \code{\link[=plot.window]{plot.window()}}.}
 }
 \value{
 Invisibly returns a list with the following 3 components:
@@ -126,24 +131,26 @@ drawing a plot without the legend that is the same size as the plots with legend
 will reset plot parameters to the values before entering the function).}
 }
 \description{
-\code{spoints} (generic function) draws a scatter plot with points filled with different colors
-and (optionally) adds a legend strip with the color scale
-(calls \code{\link{splot}} and \code{\link{plot.default}}).
+A generic function that, by default, draws a scatter plot with points filled
+with different colors and (optionally) adds a legend strip with the color scale
+(\code{spoints.default()} calls \code{\link[=splot]{splot()}} and \code{\link[=plot.default]{plot.default()}}, or \code{\link[=plot.xy]{plot.xy()}}
+if \code{add = TRUE}).
 }
 \section{Side Effects}{
- If \code{reset = TRUE}, the plotting region (\verb{[par]("plt")})
+
+If \code{reset = TRUE}, the plotting region (\code{par("plt")})
 may be changed after exiting, to make it possible to add more features to the
 plot (setting \code{reset = FALSE} prevents this).
 }
 
 \examples{
-with( mtcars, spoints(hp, qsec, mpg, main = "Motor Trend Car Road Tests",
-      xlab = "hp", ylab = "qsec", legend.lab = "mpg"))
+with(mtcars,
+    spoints(hp, qsec, mpg, main = "Motor Trend Car Road Tests")
+)
 }
 \seealso{
-\code{\link{splot}}, \code{\link{simage}}, \code{\link{spersp}},
-\code{\link{image}}, \code{\link[fields]{image.plot}},
-\code{\link{plot.default}}.
+\code{\link[=splot]{splot()}}, \code{\link[=simage]{simage()}}, \code{\link[=spersp]{spersp()}}, \code{\link[=image]{image()}}, \code{\link[fields:image.plot]{fields::image.plot()}},
+\code{\link[=plot.default]{plot.default()}}, \code{\link[=fpoints]{fpoints()}}.
 }
 \author{
 Based on \code{\link[fields]{image.plot}} function from package \pkg{fields}:

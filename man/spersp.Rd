@@ -103,13 +103,13 @@ function. Usually this will not be needed (see \code{\link[fields]{image.plot}}
 for details).}
 
 \item{reset}{logical; if \code{FALSE} the plotting region
-(\code{\link{par}("plt")}) will not be reset to make it possible to add more features
+(\code{par("plt")}) will not be reset to make it possible to add more features
 to the plot (e.g. using functions such as points or lines). If \code{TRUE} (default)
 the plot parameters will be reset to the values before entering the function.}
 
-\item{xlab}{label for the x axis.}
+\item{xlab}{label for the x axis, defaults to a description of \code{x}.}
 
-\item{ylab}{label for the y axis.}
+\item{ylab}{label for the y axis, defaults to a description of \code{y}.}
 
 \item{zlab}{label for the z axis, defaults to a description of \code{z}.}
 

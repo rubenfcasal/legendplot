@@ -23,4 +23,9 @@ Useful links:
 \author{
 \strong{Maintainer}: Ruben Fernandez-Casal \email{rubenfcasal@gmail.com} (\href{https://orcid.org/0000-0002-5785-3739}{ORCID})
 
+Authors:
+\itemize{
+  \item Ruben Fernandez-Casal \email{rubenfcasal@gmail.com} (\href{https://orcid.org/0000-0002-5785-3739}{ORCID})
+}
+
 }

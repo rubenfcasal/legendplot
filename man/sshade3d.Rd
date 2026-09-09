@@ -10,28 +10,28 @@ sshade3d(
   meshColor = c("faces", "facesvertices", "vertices"),
   slim = range(s, finite = TRUE),
   col = jet.colors(128),
+  legend = TRUE,
   legend.zoom = 0.4,
   legend.width = 0.1,
-  legend.mar = 0.15,
+  legend.dim = 0.2,
   legend.lab = NULL,
   box = TRUE,
   lab.breaks = NULL,
   lab.ticksize = 0.5,
   lab.dist = 3,
-  add = FALSE,
   ...
 )
 }
 \arguments{
 \item{x}{triangular mesh (\code{mesh3d} object, see \code{\link[rgl:mesh3d]{rgl::mesh3d()}}).}
 
-\item{s}{values used to color the mesh. How they are
-interpreted depends on \code{meshColor}.}
+\item{s}{values used to color the mesh. How they are interpreted depends on
+\code{meshColor}.}
 
 \item{meshColor}{determines how material colours (and textures) are interpreted:
 \code{"faces"} applies the color per face;
 \code{"facesvertices"} assumes that \code{s} contains one value per vertex,
-calculates the average per face (via \code{\link[=vb2tri]{vb2tri()}}), and applies the
+calculates the average per face (via \code{\link[=vb2tri3d]{vb2tri3d()}}), and applies the
 resulting color to each face;
 \code{"vertices"} applies the color per vertex. See \code{\link[rgl:shade3d]{rgl::shade3d()}}.}
 
@@ -41,14 +41,20 @@ to set up the color scale.}
 \item{col}{color table used to set up the color scale. Defaults to
 \code{jet.colors(128)}.}
 
+\item{legend}{logical; if \code{TRUE} (default), the active rgl device is splitted
+into two subscenes, drawing the 3D mesh object in one and the legend with
+the color scale in the other (see \code{\link[=splot3d]{splot3d()}}).
+if \code{FALSE} only the (coloured) mesh is drawn and the arguments related to
+the legend are ignored (\code{\link[=splot3d]{splot3d()}} is not called).}
+
 \item{legend.zoom}{zoom factor applied to the legend subscene (see
-\code{\link[rgl:viewpoint]{rgl::view3d()}}).}
+\code{\link[rgl:view3d]{rgl::view3d()}}).}
 
 \item{legend.width}{relative width of the color bar, as a fraction of
 the corresponding dimension of the legend subscene/panel.}
 
-\item{legend.mar}{relative width of the legend panel, as a fraction of
-the total device width.}
+\item{legend.dim}{relative dimension of the legend panel, as a fraction of
+the full width (or height) of the device.}
 
 \item{legend.lab}{legend title.}
 
@@ -64,9 +70,6 @@ of the distance to the center of the legend panel.}
 \item{lab.dist}{distance between the tick marks and the labels of the
 legend axis, as a multiple of \code{lab.ticksize}.}
 
-\item{add}{logical; if \code{TRUE} the legend is not redrawn (useful for
-adding several meshes to an already existing legend).}
-
 \item{...}{additional arguments passed to \code{\link[rgl:shade3d]{rgl::shade3d()}}.}
 }
 \value{
@@ -76,14 +79,14 @@ the legend on the active rgl device); invisibly returns the object identifiers.
 \description{
 Draws a triangular mesh (\code{mesh3d}) colored according to a continuous
 scale associated with a vector of values \code{s} (via \code{\link[rgl:shade3d]{rgl::shade3d()}}),
-automatically adding a color-bar legend (via \code{\link[=splot3d]{splot3d()}}).
+and (optionally) adds a color-bar legend (via \code{\link[=splot3d]{splot3d()}}).
 }
 \examples{
 library(rgl)
-open3d()
+open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
 sshade3d(volcanom, s = volcanom$vb[3, ], meshColor = "facesvertices")
 
 }
 \seealso{
-\code{\link[=splot3d]{splot3d()}}, \code{\link[=scolor]{scolor()}}, \code{\link[=vb2tri]{vb2tri()}}, \code{\link[=fshade3d]{fshade3d()}}
+\code{\link[=splot3d]{splot3d()}}, \code{\link[=scolor]{scolor()}}, \code{\link[=vb2tri3d]{vb2tri3d()}}, \code{\link[=fshade3d]{fshade3d()}}, \code{\link[rgl:shade3d]{rgl::shade3d()}}.
 }

@@ -2,24 +2,24 @@
 % Please edit documentation in R/viewpoint.R
 \name{viewpoints}
 \alias{viewpoints}
-\alias{add.viewpoint}
-\alias{set.viewpoint}
-\alias{ls.viewpoints}
-\alias{rm.viewpoints}
-\alias{get.viewpoints}
+\alias{addviewpoint3d}
+\alias{setviewpoint3d}
+\alias{lsviewpoints3d}
+\alias{rmviewpoints3d}
+\alias{getviewpoints3d}
 \alias{getview3d}
 \alias{setview3d}
 \title{Work with 'rgl' viewpoints}
 \usage{
-add.viewpoint(name, view = getview3d())
+addviewpoint3d(name, view = getview3d())
 
-set.viewpoint(name)
+setviewpoint3d(name = "default")
 
-ls.viewpoints(...)
+lsviewpoints3d(...)
 
-rm.viewpoints(...)
+rmviewpoints3d(...)
 
-get.viewpoints()
+getviewpoints3d()
 
 getview3d()
 
@@ -27,7 +27,7 @@ setview3d(view)
 }
 \arguments{
 \item{name}{character string giving the name under which a viewpoint is
-stored (\code{add.viewpoint()}) or looked up (\code{set.viewpoint()}).}
+stored (\code{addviewpoint3d()}) or looked up (\code{setviewpoint3d()}).}
 
 \item{view}{a list with the viewpoint parameters, typically the value
 returned by \code{getview3d()}.}
@@ -35,25 +35,25 @@ returned by \code{getview3d()}.}
 \item{...}{additional arguments to be passed to \code{\link[=ls]{ls()}} or \code{\link[=rm]{rm()}}.}
 }
 \value{
-\code{add.viewpoint()} is called for its side effect of storing \code{view} under
+\code{addviewpoint3d()} is called for its side effect of storing \code{view} under
 \code{name}; it invisibly returns \code{view}.
 
-\code{set.viewpoint()} is called for its side effect of restoring a stored
-viewpoint; it invisibly returns the corresponding \code{view}.
+\code{setviewpoint3d()} is called for its side effect of restoring a stored
+viewpoint to the current rgl subscene; it invisibly returns the corresponding \code{view}.
 
-\code{ls.viewpoints()} returns a character vector with the names of the
+\code{lsviewpoints3d()} returns a character vector with the names of the
 stored viewpoints.
 
-\code{rm.viewpoints()} is called for its side effect of removing one or more
+\code{rmviewpoints3d()} is called for its side effect of removing one or more
 stored viewpoints.
 
-\code{get.viewpoints()} returns a named list with all the stored viewpoints.
+\code{getviewpoints3d()} returns a named list with all the stored viewpoints.
 
 \code{getview3d()} returns a list with the components \code{zoom}, \code{userMatrix}
 and \code{userProjection} (see \code{\link[rgl:par3d]{rgl::par3d()}}).
 
 \code{setview3d()} is called mainly for its side effect of setting the
-viewpoint of the active rgl device (see \code{\link[rgl:par3d]{rgl::par3d()}}); it returns the
+viewpoint of the current rgl subscene (see \code{\link[rgl:par3d]{rgl::par3d()}}); it returns the
 value returned by \code{par3d()}.
 }
 \description{
@@ -61,52 +61,55 @@ Functions to retrieve, save, restore, list and remove rgl viewpoints; see
 \emph{Details} for additional information.
 }
 \details{
-\code{add.viewpoint()} stores \code{view} under \code{name},
+\code{addviewpoint3d()} stores \code{view} under \code{name},
 silently overwriting any viewpoint previously stored under the same name.
 By default \code{view} is the current viewpoint, as returned by \code{getview3d()}.
 
-\code{set.viewpoint()} looks up the viewpoint stored under \code{name} and applies
-it to the active rgl device via \code{setview3d()}.
+\code{setviewpoint3d()} looks up the viewpoint stored under \code{name} and applies
+it to the current rgl subscene via \code{setview3d()}.
 
-\code{ls.viewpoints()} returns the names of all the viewpoints currently
+\code{lsviewpoints3d()} returns the names of all the viewpoints currently
 stored.
 
-\code{rm.viewpoints()} removes one or more stored viewpoints by name; called
-with no arguments, it removes \emph{all} of them.
+\code{rmviewpoints3d()} Deletes one or more saved viewpoints by name.
+If called without arguments, it deletes all of them, always retaining
+the \code{"default"} viewpoint.
 
-\code{get.viewpoints()} returns a named list with all the viewpoints
+\code{getviewpoints3d()} returns a named list with all the viewpoints
 currently stored, one entry per name.
 
 \code{getview3d()} retrieves the parameters that define the current viewpoint
-of the active rgl device (zoom, user matrix and user projection), so
+of the current rgl subscene (zoom, user matrix and user projection), so
 that they can be saved and restored later with \code{setview3d()}.
 
-\code{setview3d()} applies to the active rgl device a viewpoint previously
-obtained with \code{getview3d()} (this is also what \code{set.viewpoint()} uses
+\code{setview3d()} applies to the current rgl subscene a viewpoint previously
+obtained with \code{getview3d()} (this is also what \code{setviewpoint3d()} uses
 internally to restore a stored viewpoint).
 }
 \examples{
 library(rgl)
-new3d()
+open3d()
+# Alternatively, use `new3d()` to clear the current device or open a new one.
+# It also saves the default viewpoint under the name "default"
 shade3d(volcanom, col = "lightgreen")
 
-# Save the current viewpoint under the name "default"
-add.viewpoint("default")
+# ... rotate, zoom or pan the scene interactively ...
+# Save the current viewpoint under the name "myview"
+addviewpoint3d("myview")
 
 # ... rotate, zoom or pan the scene interactively ...
-
+# Restore the default viewpoint
+setviewpoint3d()
 # Restore the saved viewpoint
-set.viewpoint("default")
+setviewpoint3d("myview")
 
 # Names of the stored viewpoints
-ls.viewpoints()
-
+lsviewpoints3d()
 # All stored viewpoints, as a named list
-get.viewpoints()
-
+views <- getviewpoints3d()
 # Remove all stored viewpoints
-rm.viewpoints()
-ls.viewpoints()
+rmviewpoints3d()
+lsviewpoints3d()
 }
 \seealso{
 \code{\link[rgl:par3d]{rgl::par3d()}}

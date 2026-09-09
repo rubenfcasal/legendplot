@@ -3,7 +3,7 @@
 \docType{data}
 \name{volcanom}
 \alias{volcanom}
-\title{Surface Mesh of Auckland's Maunga Whau Volcano}
+\title{Surface mesh of Auckland's Maunga Whau volcano}
 \format{
 \subsection{\code{volcanom}}{
 
@@ -14,7 +14,7 @@ A \link[rgl:mesh3d]{rgl::mesh3d}-class object with 5307 vertices and 10320 trian
 \link[datasets:volcano]{datasets::volcano} and example taken from \link[rgl:surface3d]{rgl::surface3d}.
 }
 \usage{
-volcanom
+data(volcanom)
 }
 \description{
 Surface mesh corresponding to the altitude on a 10m by 10m grid
@@ -22,7 +22,7 @@ of Auckland's Maunga Whau volcano.
 }
 \examples{
 library(rgl)
-open3d()
+open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
 aspect3d(1, 1, 3)  # Exaggerate the relief
 shade3d(volcanom, col = "lightgreen")
 }

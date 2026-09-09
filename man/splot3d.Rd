@@ -7,9 +7,9 @@
 splot3d(
   slim = c(0, 1),
   col = jet.colors(128),
-  legend.zoom = 0.6,
+  legend.zoom = 0.4,
   legend.width = 0.1,
-  legend.mar = 0.2,
+  legend.dim = 0.2,
   legend.lab = NULL,
   box = TRUE,
   lab.breaks = NULL,
@@ -26,13 +26,13 @@ to set up the color scale.}
 \code{jet.colors(128)}.}
 
 \item{legend.zoom}{zoom factor applied to the legend subscene (see
-\code{\link[rgl:viewpoint]{rgl::view3d()}}).}
+\code{\link[rgl:view3d]{rgl::view3d()}}).}
 
 \item{legend.width}{relative width of the color bar, as a fraction of
 the corresponding dimension of the legend subscene/panel.}
 
-\item{legend.mar}{relative width of the legend panel, as a fraction of
-the total device width.}
+\item{legend.dim}{relative dimension of the legend panel, as a fraction of
+the full width (or height) of the device.}
 
 \item{legend.lab}{legend title.}
 
@@ -52,16 +52,23 @@ legend axis, as a multiple of \code{lab.ticksize}.}
 }
 \value{
 Invisibly returns the identifiers of the created subscenes (see
-\code{\link[rgl:mfrow3d]{rgl::layout3d()}}).
+\code{\link[rgl:layout3d]{rgl::layout3d()}}).
 }
 \description{
 Splits the active rgl device into two subscenes (the main plot and a
 color-bar legend) and draws, in the legend subscene, a continuous color
 scale together with its corresponding values.
 }
+\details{
+Mouse rotation is disabled in the legend subscene.
+Furthermore, since \code{rgl::layout3d(..., mouseMode = "replace")} does not
+copy the user's mouse handlers (which are therefore disabled), the first one
+is set up for trackball with double click to reset view (via \code{\link[=dbltrack3d]{dbltrack3d()}}),
+and the second one (if any) for panning (via \code{\link[=pan3d]{pan3d()}}).
+}
 \examples{
 library(rgl)
-open3d()
+open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
 scale.range <- range(mtcars$mpg)
 splot3d(slim = scale.range, legend.lab = "mpg")
 with( mtcars, plot3d(hp, qsec, wt, type = "s",
@@ -69,5 +76,5 @@ with( mtcars, plot3d(hp, qsec, wt, type = "s",
 
 }
 \seealso{
-\code{\link[=sshade3d]{sshade3d()}}, \code{\link[=axis3]{axis3()}}, \code{\link[=fplot3d]{fplot3d()}}
+\code{\link[=spoints3d]{spoints3d()}}, \code{\link[=spersp3d]{spersp3d()}}, \code{\link[=sshade3d]{sshade3d()}}, \code{\link[=axis3]{axis3()}}, \code{\link[=fplot3d]{fplot3d()}}
 }

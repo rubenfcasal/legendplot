@@ -22,20 +22,24 @@ reference:
   - contents:
       - legendplot-package
   - title: "Standard plots with legends"
-    desc: "Functions for creating standard R plots with legends."
+    desc: "Functions for creating standard R plots with continuous or categorical legends."
     contents:
       - splot
-      - fplot
+      - spoints
       - simage
       - spersp
-      - spoints
+      - fplot
+      - fpoints
   - title: "'rgl' plots with legends"
-    desc: "Functions for creating 'rgl' 3d plots with legends."
+    desc: "Functions for creating 'rgl' 3d plots with continuous or categorical legends."
     contents:
       - splot3d
-      - fplot3d
-      - fshade3d
+      - spoints3d
+      - spersp3d
       - sshade3d
+      - fplot3d
+      - fpoints3d
+      - fshade3d
   - title: "Color tools"
     desc: "Color palettes and functions for assigning colors to values."
     contents:
@@ -49,16 +53,17 @@ reference:
     desc: "Utilities for working with the 'rgl' package."
     contents:
       - new3d
-      - vb2tri
-      - add.viewpoint
-      - set.viewpoint
-      - ls.viewpoints
-      - rm.viewpoints
-      - get.viewpoints
+      - vb2tri3d
+      - addviewpoint3d
+      - setviewpoint3d
+      - lsviewpoints3d
+      - rmviewpoints3d
+      - getviewpoints3d
       - getview3d
       - setview3d
-      - setmousemode
+      - setmouse3d
       - pan3d
+      - dbltrack3d
       - axis3
   - title: "Data"
     desc: "Examples of data and 3d objects."

@@ -2,7 +2,7 @@
 % Please edit documentation in R/splot3d.R
 \name{axis3}
 \alias{axis3}
-\title{3D axis with control over tick length and label position}
+\title{3D axis with control over tick length, tick angle and label position}
 \usage{
 axis3(
   edge,
@@ -13,13 +13,14 @@ axis3(
   pos = NULL,
   nticks = 5,
   ticksize = 0.05,
+  tickangle = 45,
   labeldist = 3,
   ...
 )
 }
 \arguments{
 \item{edge}{character string indicating the edge of the bounding box on
-which the axis is drawn (same format as in \code{\link[rgl:axes3d]{rgl::axis3d()}}, e.g.
+which the axis is drawn (same format as in \code{\link[rgl:axis3d]{rgl::axis3d()}}, e.g.
 \code{"z+-"}).}
 
 \item{at}{positions at which the tick marks are drawn; if \code{NULL} they
@@ -32,38 +33,55 @@ label the axes or be omitted, or a vector of labels.}
 
 \item{line}{logical; if \code{TRUE} the axis line is drawn.}
 
-\item{pos}{optional position of the axis (see \code{\link[rgl:axes3d]{rgl::axis3d()}}).}
+\item{pos}{optional position of the axis (see \code{\link[rgl:axis3d]{rgl::axis3d()}}).}
 
 \item{nticks}{approximate number of tick marks when \code{at = NULL}.}
 
 \item{ticksize}{length of the tick marks, as a fraction of the distance
 to the center of the scene's range.}
 
+\item{tickangle}{direction, in degrees, of the tick marks and labels
+within the plane orthogonal to the axis (e.g. \code{0} = along the first
+perpendicular coordinate, \code{90} = along the second one, \code{45}
+= towards the corner of the bounding box).}
+
 \item{labeldist}{distance between the tick marks and the labels, as a
 multiple of \code{ticksize}.}
 
-\item{...}{additional arguments passed to \code{\link[rgl:primitives]{rgl::segments3d()}} and
-\code{\link[rgl:texts]{rgl::text3d()}}.}
+\item{...}{additional arguments passed to \code{\link[rgl:segments3d]{rgl::segments3d()}} and
+\code{\link[rgl:text3d]{rgl::text3d()}}.}
 }
 \value{
-An \code{rglId} object (see \code{\link[rgl:rglIds]{rgl::lowlevel()}}) with the identifiers of the
+An \code{rglId} object (see \code{\link[rgl:lowlevel]{rgl::lowlevel()}}) with the identifiers of the
 \pkg{rgl} elements added (line, tick marks and labels).
 }
 \description{
-Modification of \code{\link[rgl:axes3d]{rgl::axis3d()}} that adds two extra parameters,
-\code{ticksize} and \code{labeldist}, to independently control the length of the
-axis tick marks and the distance between those tick marks and their
-labels. Based on the solution proposed on Stack Overflow (see
-\emph{References}).
+Modification of \code{\link[rgl:axis3d]{rgl::axis3d()}} that adds three extra parameters,
+\code{ticksize}, \code{labeldist} and \code{tickangle}, to independently control the
+length of the axis tick marks, the distance between those tick marks and
+their labels, and the direction (within the plane orthogonal to the axis)
+in which both the tick marks and the labels are offset (see \emph{Details}).
+Based on the solution proposed on Stack Overflow (see \emph{References}).
+}
+\details{
+By default (\code{tickangle = 45}), tick marks and labels are offset
+simultaneously along both coordinates perpendicular to the axis, towards
+the corresponding corner of the bounding box.
+The original behavior of \code{axis3d()} can be reproduced by setting
+\code{tickangle = 45} and \code{ticksize = 0.05 * sqrt(2)} (the actual relative
+length of the tick marks).
 }
 \examples{
 library(rgl)
-open3d()
+open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
 set.seed(1)
 points3d(rnorm(100), rnorm(100), rnorm(100))
 box3d()
-# z axis with longer tick marks and labels closer to them than usual
+# Draw several z axis at z+- and z--, with longer tick marks and
+# labels closer to them than usual
 axis3('z+-', ticksize = 0.5, labeldist = 1)
+axis3('z+-', ticksize = 0.5, labeldist = 1, tickangle = 0)
+axis3('z--', ticksize = 0.5, labeldist = 1, tickangle = 90)
 
 }
 \references{
@@ -71,5 +89,5 @@ Dominic Woolf (2013, Mar 23). R rgl distance between axis ticks and tick labels,
 Stack Overflow, \url{https://stackoverflow.com/a/39299740/4303451}.
 }
 \seealso{
-\code{\link[=splot3d]{splot3d()}}, \code{\link[=fplot3d]{fplot3d()}}, \code{\link[rgl:axes3d]{rgl::axis3d()}}
+\code{\link[=splot3d]{splot3d()}}, \code{\link[=fplot3d]{fplot3d()}}, \code{\link[rgl:axis3d]{rgl::axis3d()}}
 }

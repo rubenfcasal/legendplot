@@ -7,9 +7,11 @@
 fplot3d(
   labels,
   col = hcld.colors(length(labels)),
+  type = c("s", "c", "p", "l"),
   legend.zoom = 0.6,
-  legend.width = 0.1,
-  legend.mar = 0.2,
+  legend.width = 0.2,
+  legend.size = 4,
+  legend.dim = 0.2,
   legend.lab = NULL,
   lab.dist = 2.5,
   lab.rev = FALSE,
@@ -17,37 +19,55 @@ fplot3d(
 )
 }
 \arguments{
-\item{labels}{vector with the legend labels (one level per category).
+\item{labels}{vector with the legend labels (levels/categories).
 Defaults to \code{seq_along(col)}.}
 
 \item{col}{vector of colors associated with each label (defaults to
 \code{hcld.colors(length(labels))}).}
 
-\item{legend.zoom}{zoom factor applied to the legend subscene/panel}
+\item{type}{character; symbol/object used to represent each label in the
+legend: \code{"s"} for spheres (default), \code{"c"} for cubes, \code{"p"} for points,
+or \code{"l"} for (horizontal) line segments.}
 
-\item{legend.width}{relative size of the legend spheres, as a fraction of
-the corresponding dimension of the legend subscene.}
+\item{legend.zoom}{zoom factor applied to the legend subscene/panel.}
 
-\item{legend.mar}{relative width of the legend panel, as a fraction of
-the total device width.}
+\item{legend.width}{relative size of the legend symbols (spheres, cubes or
+line segments), as a fraction of the corresponding dimension
+of the legend subscene.}
+
+\item{legend.size}{point size, if \code{type = "p"}, or line width, if \code{type = "l"}
+(in pixels; see \code{size} and \code{lwd} graphical parameters in \code{\link[rgl:par3d]{rgl::par3d()}};
+ignored in all other cases).}
+
+\item{legend.dim}{relative dimension of the legend panel, as a fraction of
+the full width (or height) of the device.}
 
 \item{legend.lab}{legend title.}
 
-\item{lab.dist}{distance between the spheres and their text labels.}
+\item{lab.dist}{distance between the legend symbols and their text
+labels, as a multiple of the symbol size (\code{legend.width}).}
 
 \item{lab.rev}{logical; if \code{TRUE} the order of the levels in the legend
 is reversed (by default they are shown from top to bottom).}
 
-\item{...}{additional arguments passed to \code{\link[=axis3]{axis3()}}.}
+\item{...}{material properties (see \code{\link[rgl:material3d]{material3d()}}) used to draw the legend
+symbols.}
 }
 \value{
 Invisibly returns the identifiers of the created subscenes (see
-\code{\link[rgl:mfrow3d]{rgl::layout3d()}}).
+\code{\link[rgl:layout3d]{rgl::layout3d()}}).
 }
 \description{
 Splits the active rgl device into two subscenes (the main plot and a
-legend) and draws, in the legend subscene, in the legend subscene, a
+legend) and draws, in the legend subscene, a
 colored categorical legend together with its corresponding labels.
+}
+\details{
+Mouse rotation is disabled in the legend subscene.
+Furthermore, since \code{rgl::layout3d(..., mouseMode = "replace")} does not
+copy the user's mouse handlers (which are therefore disabled), the first one
+is set up for trackball with double click to reset view (via \code{\link[=dbltrack3d]{dbltrack3d()}}),
+and the second one (if any) for panning (via \code{\link[=pan3d]{pan3d()}}).
 }
 \examples{
 library(rgl)
@@ -57,7 +77,11 @@ f <- as.factor(mtcars$cyl)
 fplot3d(levels(f), legend.lab = "cyl")
 with( mtcars, plot3d(hp, qsec, mpg, type = "s", col = fcolor(f)))
 
+# Using cubes instead of spheres in the legend
+fplot3d(levels(f), legend.lab = "cyl", type = "c")
+with( mtcars, plot3d(hp, qsec, mpg, type = "p", col = fcolor(f)))
+
 }
 \seealso{
-\code{\link[=fshade3d]{fshade3d()}}, \code{\link[=axis3]{axis3()}}, \code{\link[=splot3d]{splot3d()}}
+\code{\link[=fpoints3d]{fpoints3d()}}, \code{\link[=fshade3d]{fshade3d()}}, \code{\link[=splot3d]{splot3d()}}.
 }

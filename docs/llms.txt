@@ -1,0 +1,114 @@
+# legendplot: Standard and ‘rgl’ Plots with Legends
+
+This package provides tools to combine standard R plots or
+[`rgl`](https://dmurdoch.github.io/rgl/) 3D plots with a legend,
+facilitating the creation of composite figures that mix 2D or 3D
+visualizations with a categorical or continuous legend.
+
+For more information visit
+<https://rubenfcasal.github.io/legendplot/articles/legendplot.html>.
+
+## Installation
+
+`legendplot` is not yet available from CRAN, but you can install the
+development version from github with:
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("rubenfcasal/legendplot")
+```
+
+# Package index
+
+- [`legendplot-package`](https://rubenfcasal.github.io/legendplot/reference/legendplot-package.md)
+  [`legendplot`](https://rubenfcasal.github.io/legendplot/reference/legendplot-package.md)
+  : legendplot: Standard and 'rgl' Plots with Legends
+
+## Standard plots with legends
+
+Functions for creating standard R plots with continuous or categorical
+legends.
+
+- [`splot()`](https://rubenfcasal.github.io/legendplot/reference/splot.md)
+  : Add a continuous color scale legend to an standard R plot
+- [`spoints()`](https://rubenfcasal.github.io/legendplot/reference/spoints.md)
+  : Scatter plot with a color scale
+- [`simage()`](https://rubenfcasal.github.io/legendplot/reference/simage.md)
+  : Image plot with a color scale
+- [`spersp()`](https://rubenfcasal.github.io/legendplot/reference/spersp.md)
+  : Perspective plot with a color scale
+- [`fplot()`](https://rubenfcasal.github.io/legendplot/reference/fplot.md)
+  : Add a categorical legend to an standard R plot
+- [`fpoints()`](https://rubenfcasal.github.io/legendplot/reference/fpoints.md)
+  : Scatter plot with a categorical legend
+
+## ‘rgl’ plots with legends
+
+Functions for creating ‘rgl’ 3d plots with continuous or categorical
+legends.
+
+- [`splot3d()`](https://rubenfcasal.github.io/legendplot/reference/splot3d.md)
+  : Add a continuous color scale legend to an 'rgl' plot
+- [`spoints3d()`](https://rubenfcasal.github.io/legendplot/reference/spoints3d.md)
+  : 3D scatter plot with a continuous color scale
+- [`spersp3d()`](https://rubenfcasal.github.io/legendplot/reference/spersp3d.md)
+  : 3D surface plot with a continuous color scale
+- [`sshade3d()`](https://rubenfcasal.github.io/legendplot/reference/sshade3d.md)
+  : Draw 3D mesh objects adding a continuous color scale
+- [`fplot3d()`](https://rubenfcasal.github.io/legendplot/reference/fplot3d.md)
+  : Add a categorical legend to an 'rgl' plot
+- [`fpoints3d()`](https://rubenfcasal.github.io/legendplot/reference/fpoints3d.md)
+  : 3D scatter plot with a categorical legend
+- [`fshade3d()`](https://rubenfcasal.github.io/legendplot/reference/fshade3d.md)
+  : Draw 3D mesh objects adding a categorical legend
+
+## Color tools
+
+Color palettes and functions for assigning colors to values.
+
+- [`scolor()`](https://rubenfcasal.github.io/legendplot/reference/continuous-color.md)
+  [`jet.colors()`](https://rubenfcasal.github.io/legendplot/reference/continuous-color.md)
+  [`hot.colors()`](https://rubenfcasal.github.io/legendplot/reference/continuous-color.md)
+  : Utilities for plotting with a continuous color scale
+- [`fcolor()`](https://rubenfcasal.github.io/legendplot/reference/categorical-color.md)
+  [`hcld.colors()`](https://rubenfcasal.github.io/legendplot/reference/categorical-color.md)
+  [`cat.colors()`](https://rubenfcasal.github.io/legendplot/reference/categorical-color.md)
+  : Utilities for plotting with a categorical legend
+
+## ‘rgl’ tools
+
+Utilities for working with the ‘rgl’ package.
+
+- [`new3d()`](https://rubenfcasal.github.io/legendplot/reference/new3d.md)
+  : New 'rgl' plot
+- [`vb2tri3d()`](https://rubenfcasal.github.io/legendplot/reference/vb2tri3d.md)
+  : Value per triangle from values at vertices
+- [`addviewpoint3d()`](https://rubenfcasal.github.io/legendplot/reference/viewpoints.md)
+  [`setviewpoint3d()`](https://rubenfcasal.github.io/legendplot/reference/viewpoints.md)
+  [`lsviewpoints3d()`](https://rubenfcasal.github.io/legendplot/reference/viewpoints.md)
+  [`rmviewpoints3d()`](https://rubenfcasal.github.io/legendplot/reference/viewpoints.md)
+  [`getviewpoints3d()`](https://rubenfcasal.github.io/legendplot/reference/viewpoints.md)
+  [`getview3d()`](https://rubenfcasal.github.io/legendplot/reference/viewpoints.md)
+  [`setview3d()`](https://rubenfcasal.github.io/legendplot/reference/viewpoints.md)
+  : Work with 'rgl' viewpoints
+- [`setmouse3d()`](https://rubenfcasal.github.io/legendplot/reference/mouse-actions.md)
+  [`pan3d()`](https://rubenfcasal.github.io/legendplot/reference/mouse-actions.md)
+  [`dbltrack3d()`](https://rubenfcasal.github.io/legendplot/reference/mouse-actions.md)
+  : Utilities for setting the 'rgl' mouse actions
+- [`axis3()`](https://rubenfcasal.github.io/legendplot/reference/axis3.md)
+  : 3D axis with control over tick length, tick angle and label position
+
+## Data
+
+Examples of data and 3d objects.
+
+- [`volcanom`](https://rubenfcasal.github.io/legendplot/reference/volcanom.md)
+  : Surface mesh of Auckland's Maunga Whau volcano
+
+# Articles
+
+### All vignettes
+
+- [An introduction to
+  legendplot](https://rubenfcasal.github.io/legendplot/articles/legendplot.md):

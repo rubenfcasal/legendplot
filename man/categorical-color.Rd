@@ -20,11 +20,12 @@ cat.colors(n)
 
 \item{labels}{levels to use. Defaults to \code{levels(as.factor(f))}.}
 
-\item{n}{number of colors (\code{>= 1}) to be in the palette.}
+\item{n}{number of colors (\verb{>= 1}) to be in the palette, or vector
+coercible to factor, in which case \code{n = nlevels(as.factor(n))}}
 
 \item{palette}{a valid palette name for \code{hcl.colors()} (one of \code{hcl.pals()}).}
 
-\item{...}{additional arguments passed to \code{legend()}.}
+\item{...}{additional arguments passed to \code{\link[=legend]{legend()}}.}
 }
 \value{
 \code{fcolor()} returns vector of colors, one per element of \code{f}.

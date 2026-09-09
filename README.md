@@ -1,8 +1,8 @@
 # legendplot: Standard and 'rgl' Plots with Legends
 
-This package provides tools to combine standard R plots or 'rgl' 3D plots 
-with a legend, facilitating the creation of composite figures that mix 2D or 3D 
-visualizations with a categorical or continuous legend.
+This package provides tools to combine standard R plots or [`rgl`](https://dmurdoch.github.io/rgl/)
+3D plots with a legend, facilitating the creation of composite figures 
+that mix 2D or 3D visualizations with a categorical or continuous legend.
 
 For more information visit <https://rubenfcasal.github.io/legendplot/articles/legendplot.html>. 
 
@@ -19,6 +19,7 @@ remotes::install_github("rubenfcasal/legendplot")
 <!-- 
 devtools::install(build_vignettes = TRUE)
 pkgdown::build_site()
+pkgdown::build_reference()
 pkgdown::build_reference(lazy = FALSE)
 pkgdown::build_articles()
 devtools::check(cran = TRUE, remote = TRUE, manual = TRUE)

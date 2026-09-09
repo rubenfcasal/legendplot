@@ -8,15 +8,16 @@ fshade3d(
   x,
   f,
   meshColor = c("faces", "vertices"),
-  labels = levels(f),
-  col = hcld.colors(length(labels)),
-  legend.zoom = 1,
-  legend.width = 0.1,
-  legend.mar = 0.15,
+  col = hcld.colors(nlevels(f)),
+  legend = TRUE,
+  legend.type = c("s", "c", "p", "l"),
+  legend.zoom = 0.6,
+  legend.width = 0.2,
+  legend.size = 4,
+  legend.dim = 0.2,
   legend.lab = NULL,
-  lab.dist = 3,
+  lab.dist = 2.5,
   lab.rev = FALSE,
-  add = FALSE,
   ...
 )
 }
@@ -29,48 +30,61 @@ interpreted depends on \code{meshColor}.}
 \item{meshColor}{determines how color is applied to the mesh: \code{"faces"} or
 \code{"vertices"} (see \code{\link[rgl:shade3d]{rgl::shade3d()}}).}
 
-\item{labels}{legend labels (defaults to \code{levels(f)}).}
+\item{col}{vector of colors associated with each level of \code{f} (defaults to
+\code{hcld.colors(nlevels(f))}).}
 
-\item{col}{vector of colors associated with each level of \code{f} (by
-default generated with \code{col.pal}).}
+\item{legend}{logical; if \code{TRUE} (default), the active rgl device is splitted
+into two subscenes, drawing the 3D mesh object in one and the categorical
+legend in the other (see \code{\link[=fplot3d]{fplot3d()}}).
+if \code{FALSE} only the (coloured) mesh is drawn and the arguments related to
+the legend are ignored (\code{\link[=fplot3d]{fplot3d()}} is not called).}
 
-\item{legend.zoom}{zoom factor applied to the legend subscene/panel}
+\item{legend.type}{character; symbol/object used to represent each
+level in the legend (see \code{type} in \code{\link[=fplot3d]{fplot3d()}}): \code{"s"} for spheres
+(default), \code{"c"} for cubes, \code{"p"} for points, or \code{"l"} for
+(horizontal) line segments.}
 
-\item{legend.width}{relative size of the legend spheres, as a fraction of
-the corresponding dimension of the legend subscene.}
+\item{legend.zoom}{zoom factor applied to the legend subscene/panel.}
 
-\item{legend.mar}{relative width of the legend panel, as a fraction of
-the total device width.}
+\item{legend.width}{relative size of the legend symbols (spheres, cubes or
+line segments), as a fraction of the corresponding dimension
+of the legend subscene.}
 
-\item{legend.lab}{legend title.}
+\item{legend.size}{point size, if \code{type = "p"}, or line width, if \code{type = "l"}
+(in pixels; see \code{size} and \code{lwd} graphical parameters in \code{\link[rgl:par3d]{rgl::par3d()}};
+ignored in all other cases).}
 
-\item{lab.dist}{distance between the spheres and their text labels.}
+\item{legend.dim}{relative dimension of the legend panel, as a fraction of
+the full width (or height) of the device.}
+
+\item{legend.lab}{label for the axis of the color legend, defaults to a
+description of \code{f}.}
+
+\item{lab.dist}{distance between the legend symbols and their text
+labels, as a multiple of the symbol size (\code{legend.width}).}
 
 \item{lab.rev}{logical; if \code{TRUE} the order of the levels in the legend
 is reversed (by default they are shown from top to bottom).}
 
-\item{add}{logical; if \code{TRUE} the legend is not redrawn (useful for
-adding several meshes to an already existing legend).}
-
 \item{...}{additional arguments passed on to \code{\link[rgl:shade3d]{rgl::shade3d()}}.}
 }
 \value{
-Called for its side effect (draws the mesh and, unless \code{add = TRUE},
+Called for its side effect (draws the mesh and, unless \code{legend = FALSE},
 the legend on the active rgl device); invisibly returns the object identifiers.
 }
 \description{
 Draws a triangular mesh (\code{mesh3d}) colored according to the levels of a
-factor \code{f}, automatically adding a categorical legend (via
+factor \code{f}, and (optionally) adds a categorical legend (via
 \code{\link[=fplot3d]{fplot3d()}}).
 }
 \examples{
 library(rgl)
-open3d()
-z_tri <- vb2tri(volcanom, volcanom$vb[3, ])
+open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
+z_tri <- vb2tri3d(volcanom, volcanom$vb[3, ])
 fz_tri <- cut(z_tri, 5)
-fshade3d(volcanom, fz_tri, legend.mar = 0.3, lab.dist = 15, lab.rev = TRUE)
+fshade3d(volcanom, fz_tri, legend.dim = 0.3, lab.rev = TRUE)
 
 }
 \seealso{
-\code{\link[=fplot3d]{fplot3d()}}, \code{\link[=sshade3d]{sshade3d()}}, \code{\link[=hcld.colors]{hcld.colors()}}
+\code{\link[=fplot3d]{fplot3d()}}, \code{\link[=sshade3d]{sshade3d()}}, \code{\link[=hcld.colors]{hcld.colors()}}.
 }

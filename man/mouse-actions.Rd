@@ -2,16 +2,19 @@
 % Please edit documentation in R/new3d.R
 \name{mouse-actions}
 \alias{mouse-actions}
-\alias{setmousemode}
+\alias{setmouse3d}
 \alias{pan3d}
+\alias{dbltrack3d}
 \title{Utilities for setting the 'rgl' mouse actions}
 \usage{
-setmousemode(
+setmouse3d(
   none = "none",
   left = "trackball",
   right = "zoom",
   middle = "fov",
-  wheel = "pull"
+  wheel = "pull",
+  dev = cur3d(),
+  subscene = currentSubscene3d(dev)
 )
 
 pan3d(
@@ -20,53 +23,84 @@ pan3d(
   subscene = currentSubscene3d(dev),
   message = FALSE
 )
+
+dbltrack3d(
+  button = 1,
+  max.interval = 0.4,
+  capture.now = FALSE,
+  message = FALSE,
+  dev = cur3d(),
+  subscene = currentSubscene3d(dev)
+)
 }
 \arguments{
 \item{none, left, right, middle, wheel}{actions for the corresponding mouse button;
 see parameter \code{mouseMode} of \code{\link[rgl:par3d]{rgl::par3d()}}.}
 
+\item{dev}{rgl device on which the mouse actions are configured. Defaults to
+the active device (see \code{\link[rgl:cur3d]{rgl::cur3d()}}).}
+
+\item{subscene}{subscene on which the mouse actions are configured. Defaults
+to the device's active subscene (see \code{\link[rgl:currentSubscene3d]{rgl::currentSubscene3d()}}).}
+
 \item{button}{mouse button on which panning is configured.
 Use 1 for left, 2 for right, 3 for middle, 4 for wheel, and 0 to set this
 action when no button is pressed.}
 
-\item{dev}{rgl device on which the callback is configured. Defaults to
-the active device (see \code{\link[rgl:open3d]{rgl::cur3d()}}).}
-
-\item{subscene}{subscene on which the callback is configured. Defaults
-to the device's active subscene.}
-
 \item{message}{whether to print a message confirming the configured button,
 device and subscene.}
+
+\item{max.interval}{maximum time, in seconds, between two clicks for
+them to be treated as a double-click.}
+
+\item{capture.now}{logical; if \code{FALSE} (default) the "default" viewpoint is
+restored on double-click (see \code{\link[=setviewpoint3d]{setviewpoint3d()}}).
+If \code{TRUE} the "reset" viewpoint is set to the values in effect
+when \code{dbltrack3d()} is called.}
 }
 \value{
-\code{setmousemode()} invisibly returns the resulting \code{mouseMode} vector.
+\code{setmouse3d()} invisibly returns the resulting \code{mouseMode} vector.
 
 \code{pan3d()} is called for its side effect (registers the mouse callbacks); it
 optionally prints a message confirming the configured button, device and
 subscene.
+
+\code{dbltrack3d()} is called for its side effect (registers the mouse callbacks); it
+optionally prints a message confirming the configured button, device and
+subscene.
 }
 \description{
-Functions to set the mouse button mode for current and new rgl devices,
-and enable panning of the active subscene;
-see \emph{Details} for additional information.
-}
-\details{
-\code{setmousemode()} sets the mouse button mode for current and new rgl devices
-(via \code{\link[rgl:par3d]{rgl::par3d()}}).
+Functions to set the mouse button actions for an \code{rgl} subscene
+(the current one on the active device by default).
+
+\code{setmouse3d()} sets the 'rgl' built-in mouse button modes (via \code{\link[rgl:par3d]{rgl::par3d()}}).
 
 \code{pan3d()} configures the callback functions of a mouse button so
-that dragging it pans the active subscene of an (opened) rgl device.
+that dragging it pans the subscene of an (opened) rgl device.
+
+\code{dbltrack3d()} installs, on the given mouse button of an \code{rgl} (sub)scene,
+the standard "trackball" rotation behavior (as that of parameter \code{mouseMode}
+of \code{\link[rgl:par3d]{rgl::par3d()}}), extended so that double-clicking resets the
+viewpoint to "default" values.
+}
+\details{
+\code{pan3d()} is based on the function of the same name included as an example
+in the documentation of \code{\link[rgl:rgl.setMouseCallbacks]{rgl::rgl.setMouseCallbacks()}}.
+
+\code{dbltrack3d()} reimplements the standard trackball rotation (following the
+\code{mouseCallbacks} demo shipped with \pkg{rgl}, \code{demo(mouseCallbacks, package = "rgl")}) so that it can measure the
+time elapsed since the previous click; if this is below \code{max.interval},
+the click is treated as a double-click and the view is reset instead of
+starting a new rotation.
 }
 \examples{
 library(rgl)
 open3d()
-setmousemode(middle = "zoom")
-pan3d(2)
+setmouse3d(middle = "zoom") # zoom with middle button or wheel
+pan3d(2) # pan the subscene with right button
+dbltrack3d(1) # rotate as usual with left button; double-click resets the view
 shade3d(volcanom, col = "lightgreen")
-
 }
 \seealso{
-\code{\link[rgl:par3d]{rgl::par3d()}}
-
-\code{\link[rgl:callbacks]{rgl::rgl.setMouseCallbacks()}}
+\code{\link[=new3d]{new3d()}}, \code{\link[rgl:par3d]{rgl::par3d()}}, \code{\link[rgl:rgl.setMouseCallbacks]{rgl::rgl.setMouseCallbacks()}}.
 }
