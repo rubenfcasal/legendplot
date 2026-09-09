@@ -17,7 +17,7 @@
 #' @aliases legendplot
 #' @import graphics
 #' @import rgl
-#' @importFrom grDevices colorRamp rgb
+#' @importFrom grDevices xy.coords xyz.coords colorRamp rgb
 # @importFrom methods is
 # @name legendplot-package
 # @docType package
@@ -25,7 +25,7 @@
 
 
 
-#' Surface Mesh of Auckland's Maunga Whau Volcano
+#' Surface mesh of Auckland's Maunga Whau volcano
 #'
 #' Surface mesh corresponding to the altitude on a 10m by 10m grid
 #' of Auckland's Maunga Whau volcano.
@@ -36,7 +36,7 @@
 #' [datasets::volcano] and example taken from [rgl::surface3d].
 #' @examples
 #' library(rgl)
-#' open3d()
+#' open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
 #' aspect3d(1, 1, 3)  # Exaggerate the relief
 #' shade3d(volcanom, col = "lightgreen")
 "volcanom"
@@ -63,12 +63,12 @@
     fields = c("Title", "Version", "Date")
   ))
   packageStartupMessage(
-    paste0("\n legendplot: ", pkg.info["Title"], ",\n"),
-    paste0(" version ", pkg.info["Version"], " (built on ", pkg.info["Date"], ").\n"),
-    paste0(" Copyright (C) R. Fernandez-Casal 2012-", format(as.Date(pkg.info["Date"]), "%Y"), ".\n"),
-    " Type `vignette(\"legendplot\", package = \"legendplot\")`\n",
-    " or visit https://rubenfcasal.github.io/legendplot\n",
-    " for an overview.\n"
+    paste0("legendplot: ", pkg.info["Title"], ",\n"),
+    paste0("  version ", pkg.info["Version"], " (built on ", pkg.info["Date"], ").\n"),
+    paste0("  Copyright (C) R. Fernandez-Casal 2012-", format(as.Date(pkg.info["Date"]), "%Y"), ".\n"),
+    "  Type `vignette(\"legendplot\", package = \"legendplot\")`\n",
+    "  or visit https://rubenfcasal.github.io/legendplot\n",
+    "  for an overview.\n"
   )
 
   # # Are we running in reprex::reprex?  If so, do
