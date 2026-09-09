@@ -87,9 +87,12 @@
 #' # Plot equivalent to spoints():
 #' scale.range <- range(mtcars$mpg)
 #' res <- splot(slim = scale.range, legend.lab = "mpg")
-#' with( mtcars, plot(hp, qsec, col = scolor(mpg, slim = scale.range),
-#'       pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests"))
+#' with(mtcars,
+#'    plot(hp, qsec, col = scolor(mpg, slim = scale.range),
+#'         pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests")
+#' )
 #' par(res$old.par) # restore graphical parameters
+#'
 #' # Multiple plots with a common legend:
 #' # regularly spaced 2D data...
 #' set.seed(1)
@@ -120,123 +123,121 @@
 # current figure region.
 #····································································
 splot <- function(slim = c(0,1), col = jet.colors(128), breaks = NULL,
-    horizontal = FALSE, legend.shrink = 0.9, legend.width = 1.2,
-    legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
-    bigplot = NULL, smallplot = NULL, lab.breaks = NULL, axis.args = NULL,
-    legend.args = NULL, add = FALSE) {
+                  horizontal = FALSE, legend.shrink = 0.9, legend.width = 1.2,
+                  legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
+                  bigplot = NULL, smallplot = NULL, lab.breaks = NULL,
+                  axis.args = NULL, legend.args = NULL, add = FALSE) {
 #····································································
-    #
-    # save current graphics settings
-    old.par <- par(no.readonly = TRUE)
-    if (add) big.plot <- old.par$plt
-    #
-    # figure out how to divide up the plotting real estate this
-    temp <- plt.plot(horizontal = horizontal, legend.shrink = legend.shrink,
-                     legend.width = legend.width, legend.mar = legend.mar,
-                     bigplot = bigplot, smallplot = smallplot)
-    #
-    # bigplot has plotting region coordinates for image
-    # smallplot has plotting coordinates for legend
-    smallplot <- temp$smallplot
-    bigplot <- temp$bigplot
-    #
-    # IMAGE.PLOT: draw the image in bigplot...
-    if (!add) {
-        par(plt = bigplot)
-        plot.new()
-        big.par <- par(no.readonly = TRUE)
-    }
-    ##
-    ## check dimensions of smallplot
-    if ((smallplot[2] < smallplot[1]) | (smallplot[4] < smallplot[3])) {
-        par(old.par)
-        stop("plot region too small to add legend\n")
-    }
-    # Following code draws the legend using the image function
-    # and a one column image.
-    # calculate locations for colors on legend strip
-    ix <- 1
-    binwidth <- (slim[2] - slim[1]) / length(col)
-    midpoints <- seq(slim[1] + binwidth/2, slim[2] - binwidth/2, by = binwidth)
-    iy <- midpoints
-    iz <- matrix(iy, nrow = 1, ncol = length(iy))
-    # draw either horizontal or vertical legends.
-    # using either suggested breaks or not -- a total of four cases.
-    #
-    # next par call sets up a new plotting region just for the legend strip
-    # at the smallplot coordinates
-    par(new = TRUE, pty = "m", plt = smallplot, err = -1)
-    # create the argument list to draw the axis
-    #  this avoids 4 separate calls to axis and allows passing extra
-    # arguments.
-    # then add axis with specified lab.breaks at specified breaks
-    if (!is.null(breaks) & !is.null(lab.breaks)) {
-        # axis with labels at break points
-        axis.args <- c(list(side = ifelse(horizontal, 1, 4),
-            mgp = c(3, 1, 0), las = ifelse(horizontal, 0, 2),
-            at = breaks, labels = lab.breaks), axis.args)
-    } else {
-        # If lab.breaks is not specified, with or without breaks, pretty
-        # tick mark locations and labels are computed internally,
-        # or as specified in axis.args at the function call
-        axis.args <- c(list(side = ifelse(horizontal, 1, 4),
-            mgp = c(3, 1, 0), las = ifelse(horizontal, 0, 2)),
-            axis.args)
-    }
-    #
-    # draw color scales the four cases are horizontal/vertical breaks/no breaks
-    # add a label if this is passed.
-    if (!horizontal) {
-        if (is.null(breaks)) {
-            image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "",
-                ylab = "", col = col)
-        } else {
-            image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "",
-                ylab = "", col = col, breaks = breaks)
-        }
-    }
-    else {
-        if (is.null(breaks)) {
-            image(iy, ix, t(iz), xaxt = "n", yaxt = "n", xlab = "",
-                ylab = "", col = col)
-        } else {
-            image(iy, ix, t(iz), xaxt = "n", yaxt = "n", xlab = "",
-                ylab = "", col = col, breaks = breaks)
-        }
-    }
-    #
-    # now add the axis to the legend strip.
-    # notice how all the information is in the list axis.args
-    do.call("axis", axis.args)
-    # add a box around legend strip
-    box()
-    #
-    # add a label to the axis if information has been  supplied
-    # using the mtext function. The arguments to mtext are
-    # passed as a list like the drill for axis (see above)
-    if (!is.null(legend.lab)) {
-        legend.args <- list(text = legend.lab, side = ifelse(horizontal, 1, 4),
-                            line = legend.mar - 3) # just guessing at a good default for line argument!
-    #                       line = par("mgp")[2] + 1)
-    }
-    #
-    # add the label using mtext function
-    if (!is.null(legend.args)) {
-        do.call(mtext, legend.args)
-    }
-    #
-    # clean up graphics device settings
-    # reset to larger plot region with right user coordinates.
-    mfg.save <- par()$mfg
-    if (add) {
-        par(old.par)
-        par(mfg = mfg.save, new = FALSE)
-    } else {
-        par(big.par)
-        par(plt = big.par$plt, xpd = FALSE)
-        par(mfg = mfg.save, pty = "m", new = TRUE, err = -1)
-    }
-    return(invisible(list(bigplot = bigplot, smallplot = smallplot, old.par = old.par)))
+  # save current graphics settings
+  old.par <- par(c("plt", "new", "pty", "err", "xpd")) # par(no.readonly = TRUE)
+  if (add) big.plot <- old.par$plt
+
+  # figure out how to divide up the plotting real estate this
+  temp <- plt.plot(horizontal = horizontal, legend.shrink = legend.shrink,
+                   legend.width = legend.width, legend.mar = legend.mar,
+                   bigplot = bigplot, smallplot = smallplot)
+
+  # bigplot has plotting region coordinates for image
+  # smallplot has plotting coordinates for legend
+  smallplot <- temp$smallplot
+  bigplot <- temp$bigplot
+
+  # IMAGE.PLOT: draw the image in bigplot...
+  if (!add) {
+      par(plt = bigplot)
+      plot.new()
+      big.par <- par(c("plt", "new", "pty", "err", "xpd")) # par(no.readonly = TRUE)
+  }
+
+  # check dimensions of smallplot
+  if ((smallplot[2] < smallplot[1]) | (smallplot[4] < smallplot[3])) {
+      par(old.par)
+      stop("plot region too small to add legend\n")
+  }
+  # Following code draws the legend using the image function
+  # and a one column image.
+  # calculate locations for colors on legend strip
+  ix <- 1
+  binwidth <- (slim[2] - slim[1]) / length(col)
+  midpoints <- seq(slim[1] + binwidth/2, slim[2] - binwidth/2, by = binwidth)
+  iy <- midpoints
+  iz <- matrix(iy, nrow = 1, ncol = length(iy))
+  # draw either horizontal or vertical legends.
+  # using either suggested breaks or not -- a total of four cases.
+
+  # next par call sets up a new plotting region just for the legend strip
+  # at the smallplot coordinates
+  par(new = TRUE, pty = "m", plt = smallplot, err = -1)
+  # create the argument list to draw the axis
+  #  this avoids 4 separate calls to axis and allows passing extra
+  # arguments.
+  # then add axis with specified lab.breaks at specified breaks
+  if (!is.null(breaks) & !is.null(lab.breaks)) {
+      # axis with labels at break points
+      axis.args <- c(list(side = ifelse(horizontal, 1, 4),
+          mgp = c(3, 1, 0), las = ifelse(horizontal, 0, 2),
+          at = breaks, labels = lab.breaks), axis.args)
+  } else {
+      # If lab.breaks is not specified, with or without breaks, pretty
+      # tick mark locations and labels are computed internally,
+      # or as specified in axis.args at the function call
+      axis.args <- c(list(side = ifelse(horizontal, 1, 4),
+          mgp = c(3, 1, 0), las = ifelse(horizontal, 0, 2)),
+          axis.args)
+  }
+
+  # draw color scales the four cases are horizontal/vertical breaks/no breaks
+  # add a label if this is passed.
+  if (!horizontal) {
+      if (is.null(breaks)) {
+          image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "",
+              ylab = "", col = col)
+      } else {
+          image(ix, iy, iz, xaxt = "n", yaxt = "n", xlab = "",
+              ylab = "", col = col, breaks = breaks)
+      }
+  }
+  else {
+      if (is.null(breaks)) {
+          image(iy, ix, t(iz), xaxt = "n", yaxt = "n", xlab = "",
+              ylab = "", col = col)
+      } else {
+          image(iy, ix, t(iz), xaxt = "n", yaxt = "n", xlab = "",
+              ylab = "", col = col, breaks = breaks)
+      }
+  }
+
+  # now add the axis to the legend strip.
+  # notice how all the information is in the list axis.args
+  do.call("axis", axis.args)
+  # add a box around legend strip
+  box()
+
+  # add a label to the axis if information has been  supplied
+  # using the mtext function. The arguments to mtext are
+  # passed as a list like the drill for axis (see above)
+  if (!is.null(legend.lab)) {
+      legend.args <- list(text = legend.lab, side = ifelse(horizontal, 1, 4),
+                          line = legend.mar - 3) # just guessing at a good default for line argument!
+                          # line = par("mgp")[2] + 1)
+  }
+
+  # add the label using mtext function
+  if (!is.null(legend.args)) {
+      do.call(mtext, legend.args)
+  }
+
+  # clean up graphics device settings
+  # reset to larger plot region with right user coordinates.
+  if (add) {
+      par(old.par)
+      par(new = FALSE)
+  } else {
+      par(big.par)
+      par(plt = big.par$plt, xpd = FALSE)
+      par(pty = "m", new = TRUE, err = -1)
+  }
+  return(invisible(list(bigplot = bigplot, smallplot = smallplot, old.par = old.par)))
 #····································································
 }   # splot
 
@@ -254,21 +255,22 @@ plt.plot <- function(horizontal = FALSE, legend.shrink = 0.9, legend.width = 1,
     legend.mar = ifelse(horizontal, 3.1, 5.1), bigplot = NULL, smallplot = NULL,
     stick = NULL) {
 #····································································
-    old.par <- par(no.readonly = TRUE)
+    # old.par <- par(no.readonly = TRUE)
+    old.plt <- par("plt")
     if (is.null(stick)) stick <- is.null(smallplot)
     # compute how big a text character is
-    char.size <- ifelse(horizontal, par()$cin[2]/par()$din[2],
-        par()$cin[1]/par()$din[1])
+    p <- par("cin", "din", "mar")
+    char.size <- ifelse(horizontal, p$cin[2]/p$din[2], p$cin[1]/p$din[1])
     # This is how much space to work with based on setting the margins in the
     # high level par command to leave between strip and big plot
-    offset <- char.size * ifelse(horizontal, par()$mar[1], par()$mar[4])
+    offset <- char.size * ifelse(horizontal, p$mar[1], p$mar[4])
     # this is the width of the legend strip itself.
     legend.width <- char.size * legend.width
     # this is room for legend axis labels
     legend.mar <- legend.mar * char.size
     # smallplot is the plotting region for the legend.
     if (is.null(smallplot)) {
-        smallplot <- old.par$plt
+        smallplot <- old.plt # old.par$plt
         if (horizontal) {
             smallplot[3] <- legend.mar
             smallplot[4] <- legend.width + smallplot[3]
@@ -284,7 +286,7 @@ plt.plot <- function(horizontal = FALSE, legend.shrink = 0.9, legend.width = 1,
         }
     }
     if (is.null(bigplot)) {
-        bigplot <- old.par$plt
+        bigplot <- old.plt # old.par$plt
         if (!horizontal) {
             bigplot[2] <- min(bigplot[2], smallplot[1] - offset)
         } else {

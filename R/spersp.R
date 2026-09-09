@@ -120,86 +120,89 @@ spersp.default <- function(x = seq(0, 1, len = nrow(z)), y = seq(0, 1,
 # if not use the z matrix that is also used to draw the
 # perspective plot.
 #····································································
-    if (missing(z)) {
-        if (!missing(x)) {
-            if (is.list(x)) {
-                z <- x$z
-                y <- x$y
-                x <- x$x
-            }
-            else {
-                z <- x
-                if (!is.matrix(z))
-                    stop("argument 'z' must be a matrix")
-                x <- seq.int(0, 1, length.out = nrow(z))
-            }
-        }
-        else stop("no 'z' matrix specified")
-    } else if (is.list(x)) {
-        xn <- deparse(substitute(x))
-        if (missing(xlab)) xlab <- paste(xn, "x", sep = "$")
-        if (missing(ylab)) ylab <- paste(xn, "y", sep = "$")
-        y <- x$y
-        x <- x$x
-    }
-    if (is.null(xlab))
-        xlab <- if (!missing(x))
-            deparse(substitute(x))
-        else "X"
-    if (is.null(ylab))
-        ylab <- if (!missing(y))
-            deparse(substitute(y))
-        else "Y"
-    if (is.null(zlab))
-        zlab <- if (!missing(z))
-            deparse(substitute(z))
-        else "Z"
-    if (!is.matrix(z))
-        if (missing(x) | missing(y))
-          stop("argument 'z' must be a matrix")
-        else {
-          dim(z) <- c(length(x), length(y))
-          if (!missing(s)) dim(s) <- dim(z)
-        }
-    if (!missing(s) & !identical(dim(z), dim(s)))
-              stop("'s' matrix dimensions must match 'z'")
-    # do average before? (now analogous to 'drape.plot'...)
-    if (legend)
-        # image in splot checks breaks and other parameters...
-        res <- splot(slim = slim, col = col, breaks = breaks, horizontal = horizontal,
-            legend.shrink = legend.shrink, legend.width = legend.width,
-            legend.mar = legend.mar, legend.lab = legend.lab,
-            bigplot = bigplot, smallplot = smallplot, lab.breaks = lab.breaks,
-            axis.args = axis.args, legend.args = legend.args)
-    else {
-      if (missing(bigplot)) {
-        old.par <- par(no.readonly = TRUE)
+  if (missing(z)) {
+      if (!missing(x)) {
+          if (is.list(x)) {
+              z <- x$z
+              y <- x$y
+              x <- x$x
+          }
+          else {
+              z <- x
+              if (!is.matrix(z))
+                  stop("argument 'z' must be a matrix")
+              x <- seq.int(0, 1, length.out = nrow(z))
+          }
+      }
+      else stop("no 'z' matrix specified")
+  } else if (is.list(x)) {
+      xn <- deparse(substitute(x))
+      if (missing(xlab)) xlab <- paste(xn, "x", sep = "$")
+      if (missing(ylab)) ylab <- paste(xn, "y", sep = "$")
+      y <- x$y
+      x <- x$x
+  }
+  if (is.null(xlab))
+      xlab <- if (!missing(x))
+          deparse(substitute(x))
+      else "X"
+  if (is.null(ylab))
+      ylab <- if (!missing(y))
+          deparse(substitute(y))
+      else "Y"
+  if (is.null(zlab))
+      zlab <- if (!missing(z))
+          deparse(substitute(z))
+      else "Z"
+  if (!is.matrix(z))
+      if (missing(x) | missing(y))
+        stop("argument 'z' must be a matrix")
+      else {
+        dim(z) <- c(length(x), length(y))
+        if (!missing(s)) dim(s) <- dim(z)
+      }
+  if (!missing(s) & !identical(dim(z), dim(s)))
+            stop("'s' matrix dimensions must match 'z'")
+  # do average before? (now analogous to 'drape.plot'...)
+  if (legend)
+      # image in splot checks breaks and other parameters...
+      res <- splot(slim = slim, col = col, breaks = breaks, horizontal = horizontal,
+          legend.shrink = legend.shrink, legend.width = legend.width,
+          legend.mar = legend.mar, legend.lab = legend.lab,
+          bigplot = bigplot, smallplot = smallplot, lab.breaks = lab.breaks,
+          axis.args = axis.args, legend.args = legend.args)
+  else {
+    if (missing(bigplot)) {
+        old.par <- list(plt = par("plt")) # par(no.readonly = TRUE)
         bigplot <- old.par$plt
-      } else
-          old.par <- par(plt = bigplot)
-          # old.par <- par(plt = bigplot, no.readonly = TRUE)
-      # par(xpd = FALSE)
-      res <- list(bigplot = bigplot, smallplot = NA, old.par = old.par)
-    }
-    if (reset) on.exit(par(res$old.par))
-    if (is.null(breaks)) {
-        # Compute breaks (in 'cut.default' style...)
-        ds <- diff(slim)
-        if (ds == 0) ds <- abs(slim[1L])
-        breaks <- seq.int(slim[1L] - ds/1000, slim[2L] + ds/1000, length.out = length(col) + 1)
-        # Only if !missing(slim) else breaks <- length(col) + 1?
-    }
-    # average s value for a facet
-    nx <- nrow(s)
-    ny <- ncol(s)
-    s <- 0.25 * (s[-nx,-ny] + s[-1,-ny] + s[-nx,-1] + s[-1,-1])
-    # set colors
-    icol <- cut(as.numeric(s), breaks, labels = FALSE, include.lowest = TRUE, right = FALSE) # Use .bincode instead of cut?
-    # call persp
-    pm <- persp(x, y, z,  xlab = xlab, ylab = ylab, zlab = zlab, theta = theta,
-           phi = phi, col = col[icol], ticktype = ticktype, cex.axis = cex.axis, ...)
-    # if (reset) par(res$old.par)
-    return(invisible( c(list(pm = pm), res) ))
+    } else
+        old.par <- par(plt = bigplot)
+        # old.par <- par(plt = bigplot, no.readonly = TRUE)
+    # par(xpd = FALSE)
+    res <- list(bigplot = bigplot, smallplot = NA, old.par = old.par)
+  }
+  if (reset) on.exit(par(res$old.par))
+  if (is.null(breaks)) {
+      # Compute breaks (in 'cut.default' style...)
+      ds <- diff(slim)
+      if (ds == 0) ds <- abs(slim[1L])
+      breaks <- seq.int(slim[1L] - ds/1000, slim[2L] + ds/1000, length.out = length(col) + 1)
+      # Only if !missing(slim) else breaks <- length(col) + 1?
+  }
+  # average s value for a facet
+  nx <- nrow(s)
+  ny <- ncol(s)
+  s <- 0.25 * (s[-nx,-ny] + s[-1,-ny] + s[-nx,-1] + s[-1,-1])
+  # set colors
+  icol <- cut(as.numeric(s), breaks, labels = FALSE, include.lowest = TRUE, right = FALSE) # Use .bincode instead of cut?
+  # call persp
+  pm <- persp(x, y, z,  xlab = xlab, ylab = ylab, zlab = zlab, theta = theta,
+         phi = phi, col = col[icol], ticktype = ticktype, cex.axis = cex.axis, ...)
+  # if (reset) {
+  #   res$old.par$mfg <- par("mfg")
+  #   par(res$old.par)
+  # }
+  return(invisible( c(list(pm = pm), res) ))
 #····································································
 }   # spersp.default
 

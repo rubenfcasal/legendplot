@@ -90,7 +90,7 @@ simage <- function(x, ...) {
 #····································································
 simage.default <- function(x = seq(0, 1, len = nrow(s)), y = seq(0, 1,
     len = ncol(s)), s, slim = range(s, finite = TRUE), col = jet.colors(128),
-    breaks = NULL, legend = TRUE, horizontal = FALSE, legend.shrink = 1.0,
+    breaks = NULL, legend = TRUE, horizontal = FALSE, legend.shrink = 0.8,
     legend.width = 1.2, legend.mar = ifelse(horizontal, 3.1, 5.1), legend.lab = NULL,
     bigplot = NULL, smallplot = NULL, lab.breaks = NULL, axis.args = NULL,
     legend.args = NULL, reset = TRUE, xlab = NULL, ylab = NULL, asp = NA, ...) {
@@ -137,7 +137,7 @@ simage.default <- function(x = seq(0, 1, len = nrow(s)), y = seq(0, 1,
             axis.args = axis.args, legend.args = legend.args)
     else {
         if (missing(bigplot)) {
-          old.par <- par(no.readonly = TRUE)
+          old.par <- list(plt = par("plt")) # par(no.readonly = TRUE)
           bigplot <- old.par$plt
         } else
           old.par <- par(plt = bigplot)
