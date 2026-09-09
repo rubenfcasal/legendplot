@@ -32,8 +32,8 @@
 #'   [rgl::view3d()]).
 #' @param legend.width relative width of the color bar, as a fraction of
 #'   the corresponding dimension of the legend subscene/panel.
-#' @param legend.mar relative width of the legend panel, as a fraction of
-#' the total device width.
+#' @param legend.dim relative dimension of the legend panel, as a fraction of
+#'   the full width (or height) of the device.
 #' @param legend.lab legend title.
 #' @param box logical; if `TRUE` (the default) a rectangle is drawn around
 #'   the color bar.
@@ -45,15 +45,22 @@
 #'   legend axis, as a multiple of `lab.ticksize`.
 #' @param ... additional arguments passed to [axis3()].
 #'
+#' @details
+#' Mouse rotation is disabled in the legend subscene.
+#' Furthermore, since `rgl::layout3d(..., mouseMode = "replace")` does not
+#' copy the user's mouse handlers (which are therefore disabled), the first one
+#' is set up for trackball with double click to reset view (via [dbltrack3d()]),
+#' and the second one (if any) for panning (via [pan3d()]).
+#'
 #' @return
 #' Invisibly returns the identifiers of the created subscenes (see
 #' [rgl::layout3d()]).
 #'
-#' @seealso [sshade3d()], [axis3()], [fplot3d()]
+#' @seealso [spoints3d()], [spersp3d()], [sshade3d()], [axis3()], [fplot3d()]
 #'
 #' @examples
 #' library(rgl)
-#' open3d()
+#' open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
 #' scale.range <- range(mtcars$mpg)
 #' splot3d(slim = scale.range, legend.lab = "mpg")
 #' with( mtcars, plot3d(hp, qsec, wt, type = "s",
@@ -61,25 +68,28 @@
 #'
 #' @export
 # ··············································································
-splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.6,
-                    legend.width = 0.1, legend.mar = 0.2, legend.lab = NULL,
+splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.4,
+                    legend.width = 0.1, legend.dim = 0.2, legend.lab = NULL,
                     box = TRUE, lab.breaks = NULL, lab.ticksize = 0.5,
                     lab.dist = 3, ...) {
   # ··············································································
   # slim = c(0, 1); col = jet.colors(128); legend.zoom = 0.6;
-  # legend.width = 0.1; legend.mar = 0.25; legend.lab = NULL;
-  # lab.breaks = NULL; lab.ticksize = 0.5; lab.dist = 2.5
+  # legend.width = 0.1; legend.dim = 0.25; legend.lab = NULL;
+  # lab.breaks = NULL; lab.ticksize = 0.5; lab.dist = 2.5; box = TRUE
   # TODO:
   #   - Add legend.shrink
   #   - Add breaks
   #   - Add legend position
-  #   - Add axes subscene (zoom and rotation only)
   # ············································································
+  if (!requireNamespace("rgl", quietly = TRUE))
+    stop("package 'rgl' is required")
   # Suspend drawing update
   rgl::par3d(skipRedraw = TRUE)
-  # Split into subscenes
+  # Split into subscenes (mouseMode = "replace" so that each subscene gets
+  # its own independent copy of the mouse controls)
   subscene <- rgl::layout3d(matrix(c(2, 1), nrow = 1),
-                            widths = c(1 - legend.mar, legend.mar))
+                            widths = c(1 - legend.dim, legend.dim),
+                            mouseMode = "replace")
   rgl::next3d() # move to the scene corresponding to the legend
   # Legend values
   legend.width = (slim[2] - slim[1]) * legend.width
@@ -93,8 +103,8 @@ splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.6,
                       meshColor = "faces", lit = FALSE, smooth = FALSE)
   rgl::shapelist3d(cube, x = 0, y = 0, z = iz, color = col)
   # Add legend axis
-  axis3('z+-', line = FALSE, ticksize = lab.ticksize, labeldist = lab.dist,
-        labels = lab.breaks, ...)
+  axis3('z+-', line = FALSE, ticksize = lab.ticksize, tickangle = 0,
+        labeldist = lab.dist, labels = lab.breaks, ...)
   # Draw a box around the legend?
   if (box) {
     xlim <- legend.width * c(-0.5, 0.5)
@@ -107,30 +117,47 @@ splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.6,
     rgl::segments3d(x, y, z)
   }
   if (!is.null(legend.lab))
-    rgl::text3d(-1.5 * legend.width, 0, mean(slim), legend.lab, adj = c(1, 0.5))
+    rgl::mtext3d(legend.lab, 'z--', at = NA, line = 5, adj = c(1, 0.5))
+    # rgl::text3d(-1.5 * legend.width, 0, mean(slim), legend.lab, adj = c(1, 0.5))
   # Set viewpoint
   rgl::view3d(phi = -90, fov = 0, zoom = legend.zoom)
-  # # Allow only zoom
-  # mmodes.old <- rgl::par3d("mouseMode" )
-  # mmodes <- mmodes.old
-  # mmodes[mmodes != "zoom"] <- "none"
-  # rgl::par3d(mouseMode = mmodes)
+  # Get mouse actions
+  mmodes <- rgl::par3d("mouseMode")
+  # Disable "trackball" in the legend subscene
+  mmodes[mmodes == "trackball"] <- "none"
+  rgl::par3d(mouseMode = mmodes)
   # Enable drawing update and move to the main plot scene
   rgl::par3d(skipRedraw = FALSE)
   rgl::next3d()
-  # rgl::par3d(mouseMode = mmodes.old)
+  # Get mouse actions
+  mmodes <- rgl::par3d("mouseMode")
+  # Determine mouse buttons with user handlers (set by rgl.setMouseCallbacks)
+  mbuser <- which(mmodes == "user") - 1
+  nuser <- length(mbuser)
+  if (nuser > 0)
+    dbltrack3d(mbuser[1]) # Replace user handler with trackball + double-click
+  if (nuser > 1)
+    pan3d(mbuser[2]) # Replace user handler with panning
   # Return subscene id values
   return(invisible(subscene))
 }
 
 
-#' 3D axis with control over tick length and label position
+#' 3D axis with control over tick length, tick angle and label position
 #'
-#' Modification of [rgl::axis3d()] that adds two extra parameters,
-#' `ticksize` and `labeldist`, to independently control the length of the
-#' axis tick marks and the distance between those tick marks and their
-#' labels. Based on the solution proposed on Stack Overflow (see
-#' *References*).
+#' Modification of [rgl::axis3d()] that adds three extra parameters,
+#' `ticksize`, `labeldist` and `tickangle`, to independently control the
+#' length of the axis tick marks, the distance between those tick marks and
+#' their labels, and the direction (within the plane orthogonal to the axis)
+#' in which both the tick marks and the labels are offset (see *Details*).
+#' Based on the solution proposed on Stack Overflow (see *References*).
+#'
+#' By default (`tickangle = 45`), tick marks and labels are offset
+#' simultaneously along both coordinates perpendicular to the axis, towards
+#' the corresponding corner of the bounding box.
+#' The original behavior of `axis3d()` can be reproduced by setting
+#' `tickangle = 45` and `ticksize = 0.05 * sqrt(2)` (the actual relative
+#' length of the tick marks).
 #'
 #' @param edge character string indicating the edge of the bounding box on
 #'   which the axis is drawn (same format as in [rgl::axis3d()], e.g.
@@ -145,6 +172,10 @@ splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.6,
 #' @param nticks approximate number of tick marks when `at = NULL`.
 #' @param ticksize length of the tick marks, as a fraction of the distance
 #'   to the center of the scene's range.
+#' @param tickangle direction, in degrees, of the tick marks and labels
+#'   within the plane orthogonal to the axis (e.g. `0` = along the first
+#'   perpendicular coordinate, `90` = along the second one, `45`
+#'   = towards the corner of the bounding box).
 #' @param labeldist distance between the tick marks and the labels, as a
 #'   multiple of `ticksize`.
 #' @param ... additional arguments passed to [rgl::segments3d()] and
@@ -162,17 +193,21 @@ splot3d <- function(slim = c(0, 1), col = jet.colors(128), legend.zoom = 0.6,
 #'
 #' @examples
 #' library(rgl)
-#' open3d()
+#' open3d() # Alternatively, use `new3d()` to clear the current device or open a new one
 #' set.seed(1)
 #' points3d(rnorm(100), rnorm(100), rnorm(100))
 #' box3d()
-#' # z axis with longer tick marks and labels closer to them than usual
+#' # Draw several z axis at z+- and z--, with longer tick marks and
+#' # labels closer to them than usual
 #' axis3('z+-', ticksize = 0.5, labeldist = 1)
+#' axis3('z+-', ticksize = 0.5, labeldist = 1, tickangle = 0)
+#' axis3('z--', ticksize = 0.5, labeldist = 1, tickangle = 90)
 #'
 #' @export
 # ··············································································
 axis3 <- function (edge, at = NULL, labels = TRUE, tick = TRUE, line = TRUE,
-                   pos = NULL, nticks = 5, ticksize = 0.05, labeldist = 3, ...) {
+                   pos = NULL, nticks = 5, ticksize = 0.05, tickangle = 45,
+                   labeldist = 3, ...) {
   # ··············································································
   save <- rgl::par3d(skipRedraw = TRUE, ignoreExtent = TRUE)
   on.exit(rgl::par3d(save))
@@ -205,6 +240,9 @@ axis3 <- function (edge, at = NULL, labels = TRUE, tick = TRUE, line = TRUE,
   else mpos[3, ] <- ranges$z[1]
   ticksize <- ticksize * (mpos[, 1] - c(mean(ranges$x), mean(ranges$y),
                                         mean(ranges$z)))
+  other <- setdiff(1:3, coord)
+  theta <- tickangle * pi / 180
+  ticksize[other] <- ticksize[other] * c(cos(theta), sin(theta))
   ticksize[coord] <- 0
   if (!is.null(pos))
     mpos <- matrix(pos, 3, length(at))
