@@ -47,6 +47,11 @@
 #' @param bigplot,smallplot plot coordinates for main and legend panels.
 #'   If not passed these will be determined within the function.
 #' @param ... additional arguments passed to [legend()].
+#' @section Side Effects:
+#' The plotting region (`par("plt")`) may be changed
+#' after exiting, to make it possible to add more features to the plot.
+#' They can be restored using the `old.par` returned values or by calling
+#' function [par.reset()].
 #' @return
 #' `fplot()` invisibly returns a list with components: `bigplot`,
 #' `smallplot`, `old.par`, `col` and `labels` (`par(old.par)` will reset plot
@@ -82,6 +87,7 @@ fplot <- function(labels, col = hcld.colors(length(labels)),
 
   # save current graphical settings
   old.par <- par(c("plt", "new", "pty", "err", "xpd")) # par(no.readonly = TRUE)
+  .par.reset.save(old.par)
   if (add) bigplot <- old.par$plt
 
   # default swatch arguments depending on type; border/pt.cex/seg.len/
@@ -222,10 +228,11 @@ fcolor <- function(f, col = hcld.colors(length(labels)), labels = levels(as.fact
 }
 
 
-
-# Pendiente
-# - n entero o vector as.factor
-# - nota fcolors
+#' @keywords internal
+.nfcolors <- function(x) {
+  if (length(x) == 1L && is.numeric(x) && is.finite(x) &&
+      x >= 1) x else nlevels(as.factor(x))
+}
 
 
 #' @rdname categorical-color
@@ -235,7 +242,7 @@ fcolor <- function(f, col = hcld.colors(length(labels)), labels = levels(as.fact
 #' @export
 #····································································
 hcld.colors <- function(n, palette = "Dark 3", ...) {
-  n <- if(is.numeric(n)) n else nlevels(as.factor(n))
+  n <- .nfcolors(n)
   grDevices::hcl.colors(n, palette = palette, ...)
 }
 
@@ -244,7 +251,7 @@ hcld.colors <- function(n, palette = "Dark 3", ...) {
 #' @export
 #····································································
 cat.colors <- function(n) {
-  n <- if(is.numeric(n)) n else nlevels(as.factor(n))
+  n <- .nfcolors(n)
   # https://colorbrewer2.org/#type=qualitative&scheme=Accent&n=12
   rep(c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',
         '#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928'),
