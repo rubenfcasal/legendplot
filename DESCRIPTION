@@ -1,7 +1,7 @@
 Package: legendplot
 Title: Standard and 'rgl' Plots with Legends
-Version: 0.4-0
-Date: 2026-09-08
+Version: 0.4-1
+Date: 2026-09-11
 Authors@R: person("Ruben", "Fernandez-Casal", , 
     "rubenfcasal@gmail.com", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0002-5785-3739"))

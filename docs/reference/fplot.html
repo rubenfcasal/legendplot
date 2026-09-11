@@ -11,7 +11,7 @@ legend panel, and uses legend() to draw the labels with their colors and symbols
 
     <a class="navbar-brand me-2" href="../index.html">legendplot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4-0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4-1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,6 +154,15 @@ to the existing plot (the graphical parameters are not changed).</p></dd>
     <p><code>fplot()</code> invisibly returns a list with components: <code>bigplot</code>,
 <code>smallplot</code>, <code>old.par</code>, <code>col</code> and <code>labels</code> (<code>par(old.par)</code> will reset plot
 parameters to the values before entering the function).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="side-effects">Side Effects<a class="anchor" aria-label="anchor" href="#side-effects"></a></h2>
+
+
+<p>The plotting region (<code>par("plt")</code>) may be changed
+after exiting, to make it possible to add more features to the plot.
+They can be restored using the <code>old.par</code> returned values or by calling
+function <code><a href="par.reset.html">par.reset()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

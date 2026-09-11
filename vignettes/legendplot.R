@@ -18,7 +18,7 @@ with(mtcars,
      plot(hp, qsec, col = scolor(mpg, slim = scale.range),
           pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests")
 )
-par(res$old.par) # restore graphical parameters
+par(res$old.par) # restore graphical parameters; equivalent to `par.reset()`
 
 ## ----splot-shared-legend, fig.dim=c(9, 5)-------------------------------------
 set.seed(1)
@@ -56,7 +56,13 @@ res <- fplot(levels(f), col = cat.colors(nlevels(f)), type = "point",
              legend.lab = "cyl")
 with(mtcars, plot(hp, qsec, col = fcolor(f, col = res$col),
                    pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests"))
-par(res$old.par)
+par.reset() # par(res$old.par)
+
+## ----fpoints, eval=FALSE------------------------------------------------------
+# with(mtcars,
+#      fpoints(hp, qsec, f = cyl, col = cat.colors(cyl),
+#              main = "Motor Trend Car Road Tests")
+# )
 
 ## ----splot3d------------------------------------------------------------------
 library(rgl)

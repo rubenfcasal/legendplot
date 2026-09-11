@@ -89,8 +89,11 @@ These functions are based on function \code{\link[fields]{image.plot}} of packag
 \pkg{fields}, see its documentation for additional information.
 }
 \section{Side Effects}{
- After exiting \code{splot}, the plotting region may be changed
-(\code{\link{par}("plt")}) to make it possible to add more features to the plot.
+
+The plotting region (\code{par("plt")}) may be changed
+after exiting, to make it possible to add more features to the plot.
+They can be restored using the \code{old.par} returned values or by calling
+function \code{\link[=par.reset]{par.reset()}}.
 }
 
 \examples{

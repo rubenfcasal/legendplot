@@ -30,6 +30,7 @@ reference:
       - spersp
       - fplot
       - fpoints
+      - par.reset
   - title: "'rgl' plots with legends"
     desc: "Functions for creating 'rgl' 3d plots with continuous or categorical legends."
     contents:

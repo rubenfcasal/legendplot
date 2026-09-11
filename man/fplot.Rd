@@ -83,6 +83,14 @@ parameters to the values before entering the function).
 Analogous to \code{\link[=splot]{splot()}}, splits the plotting region into a main panel and a
 legend panel, and uses \code{\link[=legend]{legend()}} to draw the labels with their colors and symbols.
 }
+\section{Side Effects}{
+
+The plotting region (\code{par("plt")}) may be changed
+after exiting, to make it possible to add more features to the plot.
+They can be restored using the \code{old.par} returned values or by calling
+function \code{\link[=par.reset]{par.reset()}}.
+}
+
 \examples{
 # Plot equivalent to fpoints():
 f <- as.factor(mtcars$cyl)

@@ -74,9 +74,9 @@ categorical legend in the other. If \code{FALSE} only the (coloured)
 scatter plot is drawn and the legend-related arguments are ignored
 (\code{\link[=fplot]{fplot()}} is not called).}
 
-\item{legend.type}{ype of symbols shown in the legend: \code{"box"} for filled
+\item{legend.type}{type of symbols shown in the legend: \code{"box"} for filled
 color boxes (as in a classic factor-level legend), \code{"point"} for points, or
-\code{"line"} for line segments. (see \code{\link[=fplot]{fplot()}}).}
+\code{"line"} for line segments (see \code{\link[=fplot]{fplot()}}).}
 
 \item{legend.pch, legend.cex}{plotting character and size used in the legend
 when \code{legend.type = "point"}.}
@@ -141,9 +141,10 @@ legend (\code{fpoints.default()} calls \code{\link[=fplot]{fplot()}} and \code{\
 }
 \section{Side Effects}{
 
-If \code{reset = TRUE}, the plotting region (\code{par("plt")})
-may be changed after exiting, to make it possible to add more features to the
-plot (setting \code{reset = FALSE} prevents this).
+If \code{reset = FALSE}, the plotting region (\code{par("plt")}) may be changed
+after exiting, to make it possible to add more features to the plot.
+They can be restored using the \code{old.par} returned values or by calling
+function \code{\link[=par.reset]{par.reset()}}.
 }
 
 \examples{

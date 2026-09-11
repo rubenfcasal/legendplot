@@ -1,5 +1,21 @@
 # Changelog
 
+## legendplot 0.4-1 (2026-09-11)
+
+- Added
+  [`par.reset()`](https://rubenfcasal.github.io/legendplot/reference/par.reset.md),
+  to restore graphical parameters (changed by
+  [`splot()`](https://rubenfcasal.github.io/legendplot/reference/splot.md)/[`fplot()`](https://rubenfcasal.github.io/legendplot/reference/fplot.md)
+  or by `sxxx()`/`fxxx()` functions with `reset = FALSE`).
+
+- Fixed bug in
+  [`hcld.colors()`](https://rubenfcasal.github.io/legendplot/reference/categorical-color.md)
+  and
+  [`cat.colors()`](https://rubenfcasal.github.io/legendplot/reference/categorical-color.md),
+  when argument `f` was a numeric vector.
+
+- Updated the `legendplot` vignette.
+
 ## legendplot 0.4-0 (2026-09-08)
 
 - Added
@@ -228,7 +244,7 @@
 ## legendplot 0.1.0 (2026-07-01)
 
 - Initial version, adapting the color-scale legend utilities of package
-  `npsp` (Fernandez-Casal, 2018, <https://rubenfcasal.github.io/npsp>)
+  `npsp` (Fernandez-Casal, 2018, <https://rubenfcasal.github.io/npsp/>)
   into a standalone package:
 
   - Added

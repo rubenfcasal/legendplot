@@ -1,3 +1,14 @@
+# legendplot 0.4-1 (2026-09-11)
+
+- Added `par.reset()`, to restore graphical parameters (changed by 
+`splot()`/`fplot()` or by `sxxx()`/`fxxx()` functions with `reset = FALSE`).
+
+- Fixed bug in `hcld.colors()` and `cat.colors()`, when argument `f` was 
+a numeric vector.
+
+- Updated the `legendplot` vignette.
+
+
 # legendplot 0.4-0 (2026-09-08)
 
 - Added `spersp3d()` S3 generic function (and default method), drawing a 
@@ -145,7 +156,7 @@ examples.
 # legendplot 0.1.0 (2026-07-01)
 
 - Initial version, adapting the color-scale legend utilities of package 
-`npsp` (Fernandez-Casal, 2018, <https://rubenfcasal.github.io/npsp>) 
+`npsp` (Fernandez-Casal, 2018, <https://rubenfcasal.github.io/npsp/>) 
 into a standalone package:
 
   * Added `splot()`, for adding a continuous color-scale legend (based on

@@ -13,7 +13,7 @@ plot.xy() if add = TRUE)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">legendplot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4-0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4-1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,9 +142,9 @@ scatter plot is drawn and the legend-related arguments are ignored
 
 
 <dt id="arg-legend-type">legend.type<a class="anchor" aria-label="anchor" href="#arg-legend-type"></a></dt>
-<dd><p>ype of symbols shown in the legend: <code>"box"</code> for filled
+<dd><p>type of symbols shown in the legend: <code>"box"</code> for filled
 color boxes (as in a classic factor-level legend), <code>"point"</code> for points, or
-<code>"line"</code> for line segments. (see <code><a href="fplot.html">fplot()</a></code>).</p></dd>
+<code>"line"</code> for line segments (see <code><a href="fplot.html">fplot()</a></code>).</p></dd>
 
 
 <dt id="arg-legend-pch-legend-cex">legend.pch, legend.cex<a class="anchor" aria-label="anchor" href="#arg-legend-pch-legend-cex"></a></dt>
@@ -239,9 +239,10 @@ parameters to the values before entering the function).</p>
     <h2 id="side-effects">Side Effects<a class="anchor" aria-label="anchor" href="#side-effects"></a></h2>
 
 
-<p>If <code>reset = TRUE</code>, the plotting region (<code>par("plt")</code>)
-may be changed after exiting, to make it possible to add more features to the
-plot (setting <code>reset = FALSE</code> prevents this).</p>
+<p>If <code>reset = FALSE</code>, the plotting region (<code>par("plt")</code>) may be changed
+after exiting, to make it possible to add more features to the plot.
+They can be restored using the <code>old.par</code> returned values or by calling
+function <code><a href="par.reset.html">par.reset()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

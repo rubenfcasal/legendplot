@@ -139,9 +139,10 @@ package fields, see its documentation for additional information.
 
 ## Side Effects
 
-After exiting `splot`, the plotting region may be changed
-([`par`](https://rdrr.io/r/graphics/par.html)`("plt")`) to make it
-possible to add more features to the plot.
+The plotting region (`par("plt")`) may be changed after exiting, to make
+it possible to add more features to the plot. They can be restored using
+the `old.par` returned values or by calling function
+[`par.reset()`](https://rubenfcasal.github.io/legendplot/reference/par.reset.md).
 
 ## See also
 

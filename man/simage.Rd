@@ -120,9 +120,11 @@ and (optionally) adds a legend strip with the color scale
 (calls \code{\link{splot}} and \code{\link{image}}).
 }
 \section{Side Effects}{
- If \code{reset = TRUE}, the plotting region (\verb{[par]("plt")})
-may be changed after exiting, to make it possible to add more features to the
-plot (setting \code{reset = FALSE} prevents this).
+
+If \code{reset = FALSE}, the plotting region (\code{par("plt")}) may be changed
+after exiting, to make it possible to add more features to the plot.
+They can be restored using the \code{old.par} returned values or by calling
+function \code{\link[=par.reset]{par.reset()}}.
 }
 
 \examples{

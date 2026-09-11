@@ -68,9 +68,11 @@
 #' for details).
 #' @param add logical; if \code{TRUE} the legend is just added
 #' to the existing plot (the graphical parameters are not changed).
-#' @section
-#' Side Effects: After exiting \code{splot}, the plotting region may be changed
-#' (\code{\link{par}("plt")}) to make it possible to add more features to the plot.
+#' @section Side Effects:
+#' The plotting region (`par("plt")`) may be changed
+#' after exiting, to make it possible to add more features to the plot.
+#' They can be restored using the `old.par` returned values or by calling
+#' function [par.reset()].
 #' @return
 #' Invisibly returns a list with the following 3 components:
 #' \item{bigplot}{plot coordinates of the main plot. These values may be useful for
@@ -130,6 +132,7 @@ splot <- function(slim = c(0,1), col = jet.colors(128), breaks = NULL,
 #····································································
   # save current graphics settings
   old.par <- par(c("plt", "new", "pty", "err", "xpd")) # par(no.readonly = TRUE)
+  .par.reset.save(old.par)
   if (add) big.plot <- old.par$plt
 
   # figure out how to divide up the plotting real estate this

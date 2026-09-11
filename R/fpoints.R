@@ -28,9 +28,10 @@
 #' [fplot()], [fcolor()], [hcld.colors()], [plot.default()], [spoints()].
 #'
 #' @section Side Effects:
-#' If `reset = TRUE`, the plotting region (`par("plt")`)
-#' may be changed after exiting, to make it possible to add more features to the
-#' plot (setting `reset = FALSE` prevents this).
+#' If `reset = FALSE`, the plotting region (`par("plt")`) may be changed
+#' after exiting, to make it possible to add more features to the plot.
+#' They can be restored using the `old.par` returned values or by calling
+#' function [par.reset()].
 #'
 #' @keywords hplot
 #' @export
@@ -51,9 +52,9 @@ fpoints <- function(x, ...) UseMethod("fpoints")
 #' @param col colors associated with each level of `f` Defaults to `hcld.colors()`.
 #' @param type character indicating the type of plotting; actually any of the
 #'   types as in [plot.default()].
-#' @param legend.type ype of symbols shown in the legend: `"box"` for filled
+#' @param legend.type type of symbols shown in the legend: `"box"` for filled
 #'   color boxes (as in a classic factor-level legend), `"point"` for points, or
-#'   `"line"` for line segments. (see [fplot()]).
+#'   `"line"` for line segments (see [fplot()]).
 #' @param legend.pch,legend.cex plotting character and size used in the legend
 #'   when `legend.type = "point"`.
 #' @param legend.lty,legend.lwd line type and width used in the legend
@@ -117,6 +118,7 @@ fpoints.default <- function(x, y = NULL, f, col = hcld.colors(f), type = "p",
       bigplot <- old.par$plt
     } else {
       old.par <- par(plt = bigplot)
+      .par.reset.save(old.par)
     }
     res <- list(bigplot = bigplot, smallplot = NA, old.par = old.par,
                 col = col, labels = labels)

@@ -37,9 +37,11 @@
 #' will reset plot parameters to the values before entering the function).}
 #'
 #' @section Side Effects:
-#' If `reset = TRUE`, the plotting region (`par("plt")`)
-#' may be changed after exiting, to make it possible to add more features to the
-#' plot (setting `reset = FALSE` prevents this).
+#' If `reset = FALSE`, the plotting region (`par("plt")`) may be changed after
+#' exiting, to make it possible to add more features to the plot.
+#  (`legend = TRUE`, `add = FALSE` and `is.null(bigplot) = FALSE`)
+#' The graphical parameters can be restored using the `old.par` returned values
+#' or by calling function [par.reset()].
 #'
 #' @seealso
 #' [splot()], [simage()], [spersp()], [image()], [fields::image.plot()],
@@ -132,9 +134,10 @@ spoints.default <- function(x, y = NULL, s, slim = range(s, finite = TRUE),
       if (is.null(bigplot)) {
         old.par <- list(plt = par("plt")) # par(no.readonly = TRUE)
         bigplot <- old.par$plt
-      } else
+      } else {
         old.par <- par(plt = bigplot)
-        # old.par <- par(plt = bigplot, no.readonly = TRUE)
+        .par.reset.save(old.par)
+      }
       # par(xpd = FALSE)
       res <- list(bigplot = bigplot, smallplot = NA, old.par = old.par)
   }

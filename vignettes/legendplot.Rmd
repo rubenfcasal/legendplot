@@ -71,7 +71,7 @@ with(mtcars,
      plot(hp, qsec, col = scolor(mpg, slim = scale.range),
           pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests")
 )
-par(res$old.par) # restore graphical parameters
+par(res$old.par) # restore graphical parameters; equivalent to `par.reset()`
 ```
 
 `scolor()` maps a numeric vector to colors from a continuous palette, such as:
@@ -121,8 +121,9 @@ par(old.par)
 ```
 
 All of them share the same legend-related arguments as `splot()`, and accept `legend = FALSE` to draw the main plot without a legend.
-By default, the plot parameters are reset to the values before entering the function. 
-If `reset = FALSE` they will not be reset to make it possible to add more features to the plot (e.g. using functions such as points or lines).
+By default, the graphical parameters are reset to the values before entering the function. 
+If `reset = FALSE` they will not be restored to make it possible to add more features to the plot (e.g. using functions such as points or lines).
+The graphical parameters can be restored using the `old.par` returned values or by calling function `par.reset()`.
 
 
 ## Categorical legends in standard plots
@@ -135,17 +136,29 @@ res <- fplot(levels(f), col = cat.colors(nlevels(f)), type = "point",
              legend.lab = "cyl")
 with(mtcars, plot(hp, qsec, col = fcolor(f, col = res$col),
                    pch = 16, cex = 1.5, main = "Motor Trend Car Road Tests"))
-par(res$old.par)
+par.reset() # par(res$old.par)
 ```
 
 `fcolor()` maps a factor (or a vector coercible to one) to colors, using a categorical palette such as `hcld.colors()` (based on `hcl.colors()` "Dark 3") or `cat.colors()` (based on [ColorBrewer 2.0](https://colorbrewer2.org)).
+
+The plot shown above can also be generated with the following command:
+
+```{r fpoints, eval=FALSE}
+with(mtcars, 
+     fpoints(hp, qsec, f = cyl, col = cat.colors(cyl), 
+             main = "Motor Trend Car Road Tests")
+)
+```
+
+Currently, only the high-level function `fpoints()` has been implemented. 
+Users can follow the same approach shown previously to generate other types of graphs or to develop additional plot functions.
 
 
 ## `rgl` 3D plots with legends
 
 The same ideas extend to interactive 3D scenes built with the `rgl` package.
 `splot3d()` and `fplot3d()` split the active `rgl` device into a main subscene and a legend subscene.
-After calling one of these functions, the usual `rgl` plotting functions can be used as normal. 
+After calling one of these functions, `rgl` plotting functions can be used as usual.
 For example:
 
 ```{r splot3d}

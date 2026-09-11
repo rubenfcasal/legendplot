@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">legendplot</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4-0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4-1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,12 @@
       <small>Source: <a href="https://github.com/rubenfcasal/legendplot/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4-1" id="legendplot-04-1-2026-09-11">legendplot 0.4-1 (2026-09-11)<a class="anchor" aria-label="anchor" href="#legendplot-04-1-2026-09-11"></a></h2>
+<ul><li><p>Added <code><a href="../reference/par.reset.html">par.reset()</a></code>, to restore graphical parameters (changed by <code><a href="../reference/splot.html">splot()</a></code>/<code><a href="../reference/fplot.html">fplot()</a></code> or by <code>sxxx()</code>/<code>fxxx()</code> functions with <code>reset = FALSE</code>).</p></li>
+<li><p>Fixed bug in <code><a href="../reference/categorical-color.html">hcld.colors()</a></code> and <code><a href="../reference/categorical-color.html">cat.colors()</a></code>, when argument <code>f</code> was a numeric vector.</p></li>
+<li><p>Updated the <code>legendplot</code> vignette.</p></li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4-0" id="legendplot-04-0-2026-09-08">legendplot 0.4-0 (2026-09-08)<a class="anchor" aria-label="anchor" href="#legendplot-04-0-2026-09-08"></a></h2>
 <ul><li><p>Added <code><a href="../reference/spersp3d.html">spersp3d()</a></code> S3 generic function (and default method), drawing a 3D surface (<code><a href="https://dmurdoch.github.io/rgl/dev/reference/persp3d.html" class="external-link">rgl::persp3d()</a></code>) with a color-bar legend (calling <code><a href="../reference/splot3d.html">splot3d()</a></code>).</p></li>
@@ -95,7 +101,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="legendplot-010-2026-07-01">legendplot 0.1.0 (2026-07-01)<a class="anchor" aria-label="anchor" href="#legendplot-010-2026-07-01"></a></h2>
 <ul><li>
-<p>Initial version, adapting the color-scale legend utilities of package <code>npsp</code> (Fernandez-Casal, 2018, <a href="https://rubenfcasal.github.io/npsp" class="external-link uri">https://rubenfcasal.github.io/npsp</a>) into a standalone package:</p>
+<p>Initial version, adapting the color-scale legend utilities of package <code>npsp</code> (Fernandez-Casal, 2018, <a href="https://rubenfcasal.github.io/npsp/" class="external-link uri">https://rubenfcasal.github.io/npsp/</a>) into a standalone package:</p>
 <ul><li><p>Added <code><a href="../reference/splot.html">splot()</a></code>, for adding a continuous color-scale legend (based on <code><a href="https://rdrr.io/pkg/fields/man/image.plot.html" class="external-link">fields::image.plot()</a></code>) to an existing or a new plot.</p></li>
 <li><p>Added <code><a href="../reference/spoints.html">spoints()</a></code>, <code><a href="../reference/simage.html">simage()</a></code> and <code><a href="../reference/spersp.html">spersp()</a></code> S3 generic functions (and default methods), drawing, respectively, a scatter plot, an image and a perspective plot together with a color-scale legend.</p></li>
 <li><p>Added <code><a href="../reference/continuous-color.html">scolor()</a></code>, <code><a href="../reference/continuous-color.html">jet.colors()</a></code> and <code><a href="../reference/continuous-color.html">hot.colors()</a></code>, for mapping a numeric vector to a continuous color palette.</p></li>

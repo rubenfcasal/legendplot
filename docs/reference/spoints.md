@@ -214,9 +214,11 @@ Invisibly returns a list with the following 3 components:
 
 ## Side Effects
 
-If `reset = TRUE`, the plotting region (`par("plt")`) may be changed
-after exiting, to make it possible to add more features to the plot
-(setting `reset = FALSE` prevents this).
+If `reset = FALSE`, the plotting region (`par("plt")`) may be changed
+after exiting, to make it possible to add more features to the plot. The
+graphical parameters can be restored using the `old.par` returned values
+or by calling function
+[`par.reset()`](https://rubenfcasal.github.io/legendplot/reference/par.reset.md).
 
 ## See also
 

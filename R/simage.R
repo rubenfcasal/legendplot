@@ -30,9 +30,11 @@
 #' @seealso \code{\link{splot}}, \code{\link{spoints}}, \code{\link{spersp}},
 #' \code{\link{image}}, \code{\link[fields]{image.plot}}.
 #'
-#' @section Side Effects: If `reset = TRUE`, the plotting region (`[par]("plt")`)
-#' may be changed after exiting, to make it possible to add more features to the
-#' plot (setting `reset = FALSE` prevents this).
+#' @section Side Effects:
+#' If `reset = FALSE`, the plotting region (`par("plt")`) may be changed
+#' after exiting, to make it possible to add more features to the plot.
+#' They can be restored using the `old.par` returned values or by calling
+#' function [par.reset()].
 #'
 #' @author
 #' Based on \code{\link[fields]{image.plot}} function from package \pkg{fields}:
@@ -136,14 +138,15 @@ simage.default <- function(x = seq(0, 1, len = nrow(s)), y = seq(0, 1,
             bigplot = bigplot, smallplot = smallplot, lab.breaks = lab.breaks,
             axis.args = axis.args, legend.args = legend.args)
     else {
-        if (missing(bigplot)) {
+        if (is.null(bigplot)) {
           old.par <- list(plt = par("plt")) # par(no.readonly = TRUE)
           bigplot <- old.par$plt
-        } else
+        } else {
           old.par <- par(plt = bigplot)
-          # old.par <- par(plt = bigplot, no.readonly = TRUE)
-        # par(xpd = FALSE)
-        res <- list(bigplot = bigplot, smallplot = NA, old.par = old.par)
+          .par.reset.save(old.par)
+        }
+      # par(xpd = FALSE)
+      res <- list(bigplot = bigplot, smallplot = NA, old.par = old.par)
     }
     if (reset) on.exit(par(res$old.par))
     if (is.null(breaks)) {

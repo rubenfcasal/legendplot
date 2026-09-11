@@ -78,7 +78,7 @@ the “keep it small and simple”,
 
 library(legendplot)
 ## legendplot: Standard and 'rgl' Plots with Legends,
-##   version 0.4-0 (built on 2026-09-08).
+##   version 0.4-1 (built on 2026-09-11).
 ##   Copyright (C) R. Fernandez-Casal 2012-2026.
 ##   Type `vignette("legendplot", package = "legendplot")`
 ##   or visit https://rubenfcasal.github.io/legendplot
@@ -109,7 +109,7 @@ with(mtcars,
 
 ``` r
 
-par(res$old.par) # restore graphical parameters
+par(res$old.par) # restore graphical parameters; equivalent to `par.reset()`
 ```
 
 [`scolor()`](https://rubenfcasal.github.io/legendplot/reference/continuous-color.md)
@@ -188,10 +188,12 @@ par(old.par)
 All of them share the same legend-related arguments as
 [`splot()`](https://rubenfcasal.github.io/legendplot/reference/splot.md),
 and accept `legend = FALSE` to draw the main plot without a legend. By
-default, the plot parameters are reset to the values before entering the
-function. If `reset = FALSE` they will not be reset to make it possible
-to add more features to the plot (e.g. using functions such as points or
-lines).
+default, the graphical parameters are reset to the values before
+entering the function. If `reset = FALSE` they will not be restored to
+make it possible to add more features to the plot (e.g. using functions
+such as points or lines). The graphical parameters can be restored using
+the `old.par` returned values or by calling function
+[`par.reset()`](https://rubenfcasal.github.io/legendplot/reference/par.reset.md).
 
 ## Categorical legends in standard plots
 
@@ -215,7 +217,7 @@ with(mtcars, plot(hp, qsec, col = fcolor(f, col = res$col),
 
 ``` r
 
-par(res$old.par)
+par.reset() # par(res$old.par)
 ```
 
 [`fcolor()`](https://rubenfcasal.github.io/legendplot/reference/categorical-color.md)
@@ -227,6 +229,22 @@ categorical palette such as
 [`cat.colors()`](https://rubenfcasal.github.io/legendplot/reference/categorical-color.md)
 (based on [ColorBrewer 2.0](https://colorbrewer2.org)).
 
+The plot shown above can also be generated with the following command:
+
+``` r
+
+with(mtcars, 
+     fpoints(hp, qsec, f = cyl, col = cat.colors(cyl), 
+             main = "Motor Trend Car Road Tests")
+)
+```
+
+Currently, only the high-level function
+[`fpoints()`](https://rubenfcasal.github.io/legendplot/reference/fpoints.md)
+has been implemented. Users can follow the same approach shown
+previously to generate other types of graphs or to develop additional
+plot functions.
+
 ## `rgl` 3D plots with legends
 
 The same ideas extend to interactive 3D scenes built with the `rgl`
@@ -235,8 +253,8 @@ package.
 and
 [`fplot3d()`](https://rubenfcasal.github.io/legendplot/reference/fplot3d.md)
 split the active `rgl` device into a main subscene and a legend
-subscene. After calling one of these functions, the usual `rgl` plotting
-functions can be used as normal. For example:
+subscene. After calling one of these functions, `rgl` plotting functions
+can be used as usual. For example:
 
 ``` r
 

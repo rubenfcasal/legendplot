@@ -107,9 +107,9 @@ fpoints(
 
 - legend.type:
 
-  ype of symbols shown in the legend: `"box"` for filled color boxes (as
-  in a classic factor-level legend), `"point"` for points, or `"line"`
-  for line segments. (see
+  type of symbols shown in the legend: `"box"` for filled color boxes
+  (as in a classic factor-level legend), `"point"` for points, or
+  `"line"` for line segments (see
   [`fplot()`](https://rubenfcasal.github.io/legendplot/reference/fplot.md)).
 
 - legend.pch, legend.cex:
@@ -206,9 +206,11 @@ to the values before entering the function).
 
 ## Side Effects
 
-If `reset = TRUE`, the plotting region (`par("plt")`) may be changed
-after exiting, to make it possible to add more features to the plot
-(setting `reset = FALSE` prevents this).
+If `reset = FALSE`, the plotting region (`par("plt")`) may be changed
+after exiting, to make it possible to add more features to the plot.
+They can be restored using the `old.par` returned values or by calling
+function
+[`par.reset()`](https://rubenfcasal.github.io/legendplot/reference/par.reset.md).
 
 ## See also
 

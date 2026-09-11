@@ -42,6 +42,8 @@ legends.
   : Add a categorical legend to an standard R plot
 - [`fpoints()`](https://rubenfcasal.github.io/legendplot/reference/fpoints.md)
   : Scatter plot with a categorical legend
+- [`par.reset()`](https://rubenfcasal.github.io/legendplot/reference/par.reset.md)
+  : Restore graphical parameters
 
 ## ‘rgl’ plots with legends
 
